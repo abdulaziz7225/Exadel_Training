@@ -1,8 +1,5 @@
-import json
-
-
 # Custom converter from csv to json
-def json_to_csv():
+def csv_to_json():
     # read the input from file
     with open('my_input.csv', 'r') as file1:
         my_lines = file1.readlines()
@@ -25,20 +22,45 @@ def json_to_csv():
 
 
 # Custom converter from json to csv
-def csv_to_json():
-    # read the input from file
-    with open("my_input.json", "r") as file1:
-        my_list = json.load(file1)
-        my_list2 = []
-        my_list2.append(",".join(my_list[0].keys()))
-        for i in my_list:
-            my_list2.append(",".join(i.values()))
-        result = "\n".join(my_list2)
+def json_to_csv():
+    # open json file
+    with open('my_input.json', 'r') as file1:
+        my_lines = file1.readlines()
 
-    # write the output to file
-    with open('my_output.csv', 'w') as file2:
-        file2.write(result)
+    my_str = ""
+    my_list = []
+    for i in my_lines:
+        my_str += i.strip()
+
+    # Read and convert rows into a list
+    number_of_rows = my_str.count('},')
+    for _ in range(number_of_rows+1):
+        start_index = my_str.find("{")
+        end_index = my_str.find("}")
+        my_list.append(my_str[start_index: end_index + 1])
+        my_str = my_str[:start_index] + my_str[end_index + 1:]
+
+    # Extract header from the json file
+    header_list = []
+    header_line = my_list[0].split('"')
+    for x in range(1, len(header_line), 4):
+        header_list.append(header_line[x])
+    header = ','.join(header_list)
+
+    # Extract values from the json file
+    result = [header]
+    for r in range(0, len(my_list)):
+        row = my_list[r].split('"')
+        row_list = []
+        for x in range(3, len(row), 4):
+            row_list.append(row[x])
+        row = ','.join(row_list)
+        result.append(row)
+
+    # write the output to csv file
+    with open("my_output.csv", 'w') as file2:
+        file2.write("\n".join(result))
 
 
-json_to_csv()
 csv_to_json()
+json_to_csv()
