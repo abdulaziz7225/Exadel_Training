@@ -14,7 +14,7 @@ work with
 4) The cost of services will be calculated from n * s where n is the cost of an hour of work of a particular company and s is the user-specified area. The **company** indicates the cost of an hour of work at the time of registration and may
 change in the future.
 5) All **companies** must have a 5-star rating system
-6) The **user** can_ leave reviews_ about a particular company
+6) The **user** can _leave reviews_ about a particular company
 
 
 ### Summary of functionality
