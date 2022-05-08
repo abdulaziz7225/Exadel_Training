@@ -1,9 +1,0 @@
-Homework:
-Custom converter from csv to json, and from json to csv
-without using csv package.
-1) Implement logic using OOP
-2) if csv field has more than 1 value, in json it should be list of data
-3) ' ' should be replaced to " "
-4) , should be added when it requires
-5) result of ur formatting should pass validation in json online validator
-6) please push ur output as separated file, to we can check it through online validator
