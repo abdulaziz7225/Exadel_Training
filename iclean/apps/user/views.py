@@ -15,3 +15,8 @@ def index(request):
 
 def say_hello(request):
     return HttpResponse("Hello World from apps.user")
+
+
+def register(request):
+    data = request.data
+    return HttpResponse("Hello World from apps.user")

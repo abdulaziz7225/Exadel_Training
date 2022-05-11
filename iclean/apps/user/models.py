@@ -1,33 +1,58 @@
-# import email
 from django.db import models
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.utils.translation import gettext_lazy as _
+
+from .managers import UserManager
+
 
 # Create your models here.
 class Role(models.Model):
-    role = models.CharField(max_length=255)
+    ADMIN = 1
+    CLIENT = 2
+    COMPANY = 3
+    ROLE_CHOICES = [
+        (ADMIN, 'admin'),
+        (CLIENT, 'client'),
+        (COMPANY, 'company'),
+    ]
+
+    id = models.PositiveSmallIntegerField(
+        primary_key=True, choices=ROLE_CHOICES)
+
+    def __str__(self):
+        return self.get_id_display()
 
 
-class User(models.Model):
-    # user_id = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user')
-    phone = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=255)
-    country = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
-    role_id = models.ForeignKey(Role, on_delete=models.PROTECT)
+class User(AbstractBaseUser, PermissionsMixin):
+    username = None
+    email = models.EmailField(_('email address'), unique=True)
+    role = models.ForeignKey(Role, on_delete=models.PROTECT, null=True)
+    phone = models.CharField(max_length=255, null=True)
+    country = models.CharField(max_length=255, null=True)
+    city = models.CharField(max_length=255, null=True)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = UserManager()
+
+    def str(self):
+        return self.email
 
 
 class Client(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='client')
+    user = models.OneToOneField(
+        User, primary_key=True, on_delete=models.CASCADE, related_name='client')
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
-    house_number = models.IntegerField()
+    house_number = models.PositiveSmallIntegerField()
     apartment = models.CharField(max_length=255)
 
 
 class Company(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='company')
+    user = models.OneToOneField(
+        User, primary_key=True, on_delete=models.CASCADE, related_name='company')
     name = models.CharField(max_length=255)
-
-
