@@ -10,5 +10,5 @@ class Notification(models.Model):
     details = models.TextField()
     viewed_by_company = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    request_id = models.ForeignKey(Request, on_delete=models.CASCADE)
-    company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
+    request = models.ForeignKey(Request, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
