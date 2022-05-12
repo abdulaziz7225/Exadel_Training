@@ -7,7 +7,7 @@ from apps.user.models import Client, Company
 # Create your models here.
 class Review(models.Model):
     comment = models.TextField()
-    rating = models.FloatField(blank=True, null=True, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
+    rating = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     created_at = models.DateTimeField(auto_now_add=True)
     client = models.ForeignKey(Client, on_delete=models.PROTECT)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
@@ -23,6 +23,6 @@ class Review(models.Model):
             if field.verbose_name != 'client':
                 my_list.append((field.verbose_name, field.value_from_object(self)))
             else:
-                my_list.append((field.verbose_name, Review.objects.get(pk=field.value_from_object(self)).name))
+                my_list.append((field.verbose_name, Review.objects.get(pk=field.value_from_object(self)).client))
         
         return my_list

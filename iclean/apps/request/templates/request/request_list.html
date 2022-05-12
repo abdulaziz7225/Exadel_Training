@@ -36,12 +36,12 @@
 					<th scope="row">{{forloop.counter}}</th>
 					{% endcomment %}
 					<td class="text-center">{{request.id}}</td>
-										<td class="text-center ml-5">
+					<td class="text-center ml-5">
 						<a href="{% url 'request:request_detail' request.id %}"
 							>{{request.name}}</a
 						>
 					</td>
-					<td class="text-center">{{request.type_of_service}}</td>
+					<td class="text-center">{{request.type_of_request}}</td>
 					<td class="text-center">{{request.total_area}}</td>
 					<td class="text-center">{{request.created_at}}</td>
 					<td class="text-center">{{request.client}}</td>

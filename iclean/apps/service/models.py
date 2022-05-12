@@ -1,13 +1,14 @@
 from django.db import models
+from django.core.validators import MinValueValidator
+
 from apps.user.models import Company
 
+
 # Create your models here.
-
-
 class Service(models.Model):
     name = models.CharField(max_length=100)
     type_of_service = models.CharField(max_length=255)
-    cost_of_service = models.DecimalField(max_digits=8, decimal_places=2)
+    cost_of_service = models.DecimalField(max_digits=8, decimal_places=2, default=0, validators=[MinValueValidator(0.0)])
     created_at = models.DateTimeField(auto_now_add=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
@@ -22,6 +23,6 @@ class Service(models.Model):
             if field.verbose_name != 'company':
                 my_list.append((field.verbose_name, field.value_from_object(self)))
             else:
-                my_list.append((field.verbose_name, Service.objects.get(pk=field.value_from_object(self)).name))
+                my_list.append((field.verbose_name, Service.objects.get(pk=field.value_from_object(self)).company))
         
         return my_list

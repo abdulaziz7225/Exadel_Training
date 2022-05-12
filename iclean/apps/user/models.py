@@ -50,7 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                     (field.verbose_name, field.value_from_object(self)))
             else:
                 my_list.append((field.verbose_name, User.objects.get(
-                    pk=field.value_from_object(self)).id))
+                    pk=field.value_from_object(self)).role))
 
         return my_list
 
@@ -75,3 +75,4 @@ class Company(models.Model):
 
     def __str__(self):
         return self.name
+
