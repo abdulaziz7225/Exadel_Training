@@ -1,0 +1,73 @@
+{% extends 'base.html' %} 
+
+{% block content %} 
+    {% for notification in notification_list %} 
+        {% for colname in notification.column_set.all %}
+            <p>{{colname}}</p>
+        {% endfor %} 
+    {% endfor %}
+
+<div class="container d-flex mt-5" style="width: 100%">
+	<div class="col">
+		<h1 class="text-center">Notifications</h1>
+		<table class="table table-striped mt-5">
+			<thead>
+				<tr>
+					{% comment %}
+					<th>#</th>
+					{% endcomment %}
+					<th class="text-center" scope="col">ID</th>
+					<th class="text-center" scope="col">Name</th>
+					<th class="text-center" scope="col">Type</th>
+					<th class="text-center" scope="col">Details</th>
+					<th class="text-center" scope="col">Viewed_by_company</th>
+					<th class="text-center" scope="col">Created_at</th>
+					<th class="text-center" scope="col">Request</th>
+					<th class="text-center" scope="col">Company</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for notification in notification_list %}
+				<tr>
+					{% comment %}
+					<th scope="row">{{forloop.counter}}</th>
+					{% endcomment %}
+					<td class="text-center">{{notification.id}}</td>
+					<td class="text-center ml-5">
+						<a href="{% url 'notification:notification_detail' notification.id %}"
+							>{{notification.name}}</a
+						>
+					</td>
+					<td class="text-center">{{notification.type_of_notification}}</td>
+					<td class="text-center">{{notification.details}}</td>
+					<td class="text-center">{{notification.viewed_by_company}}</td>
+					<td class="text-center">{{notification.created_at}}</td>
+					<td class="text-center">{{notification.request}}</td>
+					<td class="text-center">{{notification.company}}</td>
+					<td>
+						<a href="{% url 'notification:notification_update' notification.id %} "
+							>Update</a
+						>
+					</td>
+					<td>
+						<a href="{% url 'notification:notification_delete' notification.id %}"
+							>Delete</a
+						>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="d-flex justify-content-center">
+			<a
+				href="{% url 'notification:notification_create' %}"
+				class="d-block btn btn-primary btn-lg my-5"
+				>Add New</a
+			>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

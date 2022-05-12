@@ -41,6 +41,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     def str(self):
         return self.email
 
+    def get_fields(self):
+        my_list = []
+
+        for field in self.__class__._meta.fields[1:]:
+            if field.verbose_name != 'role':
+                my_list.append(
+                    (field.verbose_name, field.value_from_object(self)))
+            else:
+                my_list.append((field.verbose_name, User.objects.get(
+                    pk=field.value_from_object(self)).id))
+
+        return my_list
+
 
 class Client(models.Model):
     user = models.OneToOneField(
@@ -51,8 +64,14 @@ class Client(models.Model):
     house_number = models.PositiveSmallIntegerField()
     apartment = models.CharField(max_length=255)
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class Company(models.Model):
     user = models.OneToOneField(
         User, primary_key=True, on_delete=models.CASCADE, related_name='company')
     name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name

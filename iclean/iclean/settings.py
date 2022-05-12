@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # installed apps
     "debug_toolbar",
+    'django_extensions',
     'apps.notification',
     'apps.request',
     'apps.review',
@@ -68,9 +69,7 @@ ROOT_URLCONF = 'iclean.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / "templates" / "static",
-        ],
+        'DIRS': [BASE_DIR.joinpath('templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
