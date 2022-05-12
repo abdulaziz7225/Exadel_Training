@@ -24,6 +24,6 @@ class Notification(models.Model):
             if field.verbose_name != 'request':
                 my_list.append((field.verbose_name, field.value_from_object(self)))
             else:
-                my_list.append((field.verbose_name, Notification.objects.get(pk=field.value_from_object(self)).name))
+                my_list.append((field.verbose_name, Notification.objects.get(pk=field.value_from_object(self)).request))
         
         return my_list

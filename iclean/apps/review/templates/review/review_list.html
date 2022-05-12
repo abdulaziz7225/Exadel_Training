@@ -32,12 +32,12 @@
 					{% comment %}
 					<th scope="row">{{forloop.counter}}</th>
 					{% endcomment %}
+					<td class="text-center">{{review.id}}</td>
 					<td class="text-center ml-5">
 						<a href="{% url 'review:review_detail' review.id %}"
-							>{{review.id}}</a
+							>{{review.comment}}</a
 						>
 					</td>
-					<td class="text-center">{{review.comment}}</td>
 					<td class="text-center">{{review.rating}}</td>
 					<td class="text-center">{{review.created_at}}</td>
 					<td class="text-center">{{review.client}}</td>
