@@ -6,7 +6,7 @@ from apps.user.models import Company
 # Create your models here.
 class Notification(models.Model):
     name = models.CharField(max_length=100)
-    type_of_notification = models.CharField(max_length=255)
+    # type_of_notification = models.CharField(max_length=255)
     details = models.TextField()
     viewed_by_company = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
