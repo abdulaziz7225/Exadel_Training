@@ -1,5 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager
-
+# from django.utils.translation import ugettext_lazy as _
 
 class UserManager(BaseUserManager):
     """Custom manager that helps to create user and super user and it is
@@ -18,5 +18,6 @@ class UserManager(BaseUserManager):
         user = self.create_user(email, password, **extra_fields)
         user.is_staff = True
         user.is_superuser = True
+        user.is_active = True
         user.save(using=self._db)
         return user

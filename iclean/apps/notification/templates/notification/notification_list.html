@@ -18,7 +18,7 @@
 					{% endcomment %}
 					<th class="text-center" scope="col">ID</th>
 					<th class="text-center" scope="col">Name</th>
-					<th class="text-center" scope="col">Type</th>
+					{% comment %} <th class="text-center" scope="col">Type</th> {% endcomment %}
 					<th class="text-center" scope="col">Details</th>
 					<th class="text-center" scope="col">Viewed_by_company</th>
 					<th class="text-center" scope="col">Created_at</th>
@@ -40,7 +40,7 @@
 							>{{notification.name}}</a
 						>
 					</td>
-					<td class="text-center">{{notification.type_of_notification}}</td>
+					{% comment %} <td class="text-center">{{notification.type_of_notification}}</td> {% endcomment %}
 					<td class="text-center">{{notification.details}}</td>
 					<td class="text-center">{{notification.viewed_by_company}}</td>
 					<td class="text-center">{{notification.created_at}}</td>

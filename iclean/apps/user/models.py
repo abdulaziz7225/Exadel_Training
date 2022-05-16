@@ -30,7 +30,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=255, null=True)
     country = models.CharField(max_length=255, null=True)
     city = models.CharField(max_length=255, null=True)
+    # Designates whether the user can log into this admin site.
     is_staff = models.BooleanField(default=False)
+    # Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
     is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
