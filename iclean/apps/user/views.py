@@ -80,13 +80,6 @@ class RoleDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class RoleHighlight(generics.GenericAPIView):
-    queryset = Role.objects.all()
-    renderer_classes = [renderers.StaticHTMLRenderer]
-
-    def get(self, request, *args, **kwargs):
-        role = self.get_object()
-        return Response(role.highlighted)
 
 
 """
@@ -138,13 +131,6 @@ class UserDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class UserHighlight(generics.GenericAPIView):
-    queryset = User.objects.all()
-    renderer_classes = [renderers.StaticHTMLRenderer]
-
-    def get(self, request, *args, **kwargs):
-        user = self.get_object()
-        return Response(user.highlighted)
 
 
 
@@ -197,13 +183,6 @@ class ClientDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class ClientHighlight(generics.GenericAPIView):
-    queryset = Client.objects.all()
-    renderer_classes = [renderers.StaticHTMLRenderer]
-
-    def get(self, request, *args, **kwargs):
-        client = self.get_object()
-        return Response(client.highlighted)
 
 
 """
@@ -254,11 +233,3 @@ class CompanyDetail(APIView):
         company.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-class CompanyHighlight(generics.GenericAPIView):
-    queryset = Company.objects.all()
-    renderer_classes = [renderers.StaticHTMLRenderer]
-
-    def get(self, request, *args, **kwargs):
-        company = self.get_object()
-        return Response(company.highlighted)

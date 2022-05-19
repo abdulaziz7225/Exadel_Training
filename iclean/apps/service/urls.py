@@ -5,7 +5,6 @@ from apps.service import views
 urlpatterns = [
     path('', views.ServiceList.as_view(), name='service-list'),
     path('<int:pk>/', views.ServiceDetail.as_view(), name='service-detail'),
-    path('<int:pk>/highlight/', views.ServiceHighlight.as_view(), name='service-highlight'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

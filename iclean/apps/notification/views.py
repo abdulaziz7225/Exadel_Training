@@ -54,11 +54,3 @@ class NotificationDetail(APIView):
         notification.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-class NotificationHighlight(generics.GenericAPIView):
-    queryset = Notification.objects.all()
-    renderer_classes = [renderers.StaticHTMLRenderer]
-
-    def get(self, request, *args, **kwargs):
-        notification = self.get_object()
-        return Response(notification.highlighted)

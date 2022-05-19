@@ -54,13 +54,6 @@ class RequestStatusDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class RequestStatusHighlight(generics.GenericAPIView):
-    queryset = Request_status.objects.all()
-    renderer_classes = [renderers.StaticHTMLRenderer]
-
-    def get(self, request, *args, **kwargs):
-        request_status = self.get_object()
-        return Response(request_status.highlighted)
 
 
 # Request model
@@ -109,11 +102,3 @@ class RequestDetail(APIView):
         myrequest.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-class RequestHighlight(generics.GenericAPIView):
-    queryset = Request.objects.all()
-    renderer_classes = [renderers.StaticHTMLRenderer]
-
-    def get(self, request, *args, **kwargs):
-        request = self.get_object()
-        return Response(request.highlighted)

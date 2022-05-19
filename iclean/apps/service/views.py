@@ -54,11 +54,3 @@ class ServiceDetail(APIView):
         service.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-class ServiceHighlight(generics.GenericAPIView):
-    queryset = Service.objects.all()
-    renderer_classes = [renderers.StaticHTMLRenderer]
-
-    def get(self, request, *args, **kwargs):
-        service = self.get_object()
-        return Response(service.highlighted)

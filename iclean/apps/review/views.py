@@ -54,11 +54,3 @@ class ReviewDetail(APIView):
         review.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-class ReviewHighlight(generics.GenericAPIView):
-    queryset = Review.objects.all()
-    renderer_classes = [renderers.StaticHTMLRenderer]
-
-    def get(self, request, *args, **kwargs):
-        review = self.get_object()
-        return Response(review.highlighted)
