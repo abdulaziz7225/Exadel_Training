@@ -1,42 +1,18 @@
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.reverse import reverse
-from rest_framework import renderers, generics
-
+from rest_framework import viewsets
 
 from apps.user.models import Role, User, Client, Company
 from apps.user.serializers import RoleSerializer, UserSerializer, ClientSerializer, CompanySerializer
 
 
-"""
-root api
-"""
-
-
-@api_view(['GET'])
-def api_root(request, format=None):
-    return Response({
-        'notification': reverse('notification-list', request=request, format=format),
-        'review': reverse('review-list', request=request, format=format),
-        'request': reverse('request-list', request=request, format=format),
-        'service': reverse('service-list', request=request, format=format),
-        'role': reverse('role-list', request=request, format=format),
-        'user': reverse('user-list', request=request, format=format),
-        'client': reverse('client-list', request=request, format=format),
-        'company': reverse('company-list', request=request, format=format),
-    })
-
 
 """
 Role model
 """
-class RoleList(generics.ListCreateAPIView):
-    queryset = Role.objects.all()
-    serializer_class = RoleSerializer
-
-
-class RoleDetail(generics.RetrieveUpdateDestroyAPIView):
+class RoleViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
 
@@ -44,12 +20,11 @@ class RoleDetail(generics.RetrieveUpdateDestroyAPIView):
 """
 User model 
 """
-class UserList(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -57,12 +32,11 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 """
 Client model
 """
-class ClientList(generics.ListCreateAPIView):
-    queryset = Client.objects.all()
-    serializer_class = ClientSerializer
-
-
-class ClientDetail(generics.RetrieveUpdateDestroyAPIView):
+class ClientViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
@@ -70,11 +44,11 @@ class ClientDetail(generics.RetrieveUpdateDestroyAPIView):
 """
 Company model 
 """
-class CompanyList(generics.ListCreateAPIView):
+class CompanyViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
-
-class CompanyDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Company.objects.all()
-    serializer_class = CompanySerializer

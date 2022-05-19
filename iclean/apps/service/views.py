@@ -1,15 +1,14 @@
-from rest_framework.response import Response
-from rest_framework import generics, renderers
+from rest_framework import viewsets
 
 from apps.service.models import Service
 from apps.service.serializers import ServiceSerializer
 
 
-class ServiceList(generics.ListCreateAPIView):
+class ServiceViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
-
-class ServiceDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Service.objects.all()
-    serializer_class = ServiceSerializer

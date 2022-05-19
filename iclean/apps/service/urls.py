@@ -1,10 +1,15 @@
-from django.urls import path
-from rest_framework.urlpatterns import format_suffix_patterns
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
 from apps.service import views
 
+
+# Create a router and register our viewsets with it.
+router = DefaultRouter()
+router.register(r'services', views.ServiceViewSet,basename="services")
+
+# The API URLs are now determined automatically by the router.
 urlpatterns = [
-    path('', views.ServiceList.as_view(), name='service-list'),
-    path('<int:pk>/', views.ServiceDetail.as_view(), name='service-detail'),
+    path('', include(router.urls)),
 ]
 
-urlpatterns = format_suffix_patterns(urlpatterns)

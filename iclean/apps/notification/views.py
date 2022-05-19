@@ -1,16 +1,15 @@
-from rest_framework.response import Response
-from rest_framework import renderers, generics
+from rest_framework import viewsets
 
 from apps.notification.models import Notification
 from apps.notification.serializers import NotificationSerializer
 
 
-class NotificationList(generics.ListCreateAPIView):
+class NotificationViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
 
-
-class NotificationDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Notification.objects.all()
-    serializer_class = NotificationSerializer
 
