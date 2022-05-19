@@ -1,39 +1,64 @@
-from django.views import View
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework import generics, renderers
 
-from .models import Review
-
-
-# Create your views here.
-# Views for Notification model
-class ReviewBaseView(View):
-    model = Review
-    fields = '__all__'
-    success_url = reverse_lazy('review:all')
+from apps.review.models import Review
+from apps.review.serializers import ReviewSerializer
 
 
-class ReviewListView(ReviewBaseView, ListView):
-    """View to list all notifications
-   Use the 'notification_list' variable in the template
-   to access all Notification objects"""
+
+class ReviewList(APIView):
+    """
+    List all reviews, or create a new review.
+    """
+    def get(self, request, format=None):
+        reviews = Review.objects.all()
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = ReviewSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ReviewDetailView(ReviewBaseView, DetailView):
-    """View to list the details from one notification.
-    Use the 'notification' variable in the template to access
-    the specific notification here and in the Views below"""
+class ReviewDetail(APIView):
+    """
+    Retrieve, update or delete a review instance.
+    """
+    def get_object(self, pk):
+        try:
+            return Review.objects.get(pk=pk)
+        except Review.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        review = self.get_object(pk)
+        serializer = ReviewSerializer(review)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        review = self.get_object(pk)
+        serializer = ReviewSerializer(review, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        review = self.get_object(pk)
+        review.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class ReviewCreateView(ReviewBaseView, CreateView):
-    """View to create a new notification"""
+class ReviewHighlight(generics.GenericAPIView):
+    queryset = Review.objects.all()
+    renderer_classes = [renderers.StaticHTMLRenderer]
 
-
-class ReviewUpdateView(ReviewBaseView, UpdateView):
-    """View to update a notification"""
-
-
-class ReviewDeleteView(ReviewBaseView, DeleteView):
-    """View to delete a notification"""
+    def get(self, request, *args, **kwargs):
+        review = self.get_object()
+        return Response(review.highlighted)

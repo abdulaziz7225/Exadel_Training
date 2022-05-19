@@ -1,39 +1,119 @@
-from django.views import View
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework import renderers, generics
 
-from .models import Request
+from apps.request.models import Request, Request_status
+from apps.request.serializers import RequestSerializer, RequestStatusSerializer
 
+# Request_status model
+class RequestStatusList(APIView):
+    """
+    List all request statuses, or create a new request status.
+    """
+    def get(self, request, format=None):
+        request_status = Request_status.objects.all()
+        serializer = RequestStatusSerializer(request_status, many=True)
+        return Response(serializer.data)
 
-# Create your views here.
-# Views for Notification model
-class RequestBaseView(View):
-    model = Request
-    fields = '__all__'
-    success_url = reverse_lazy('request:all')
-
-
-class RequestListView(RequestBaseView, ListView):
-    """View to list all notifications
-   Use the 'notification_list' variable in the template
-   to access all Notification objects"""
-
-
-class RequestDetailView(RequestBaseView, DetailView):
-    """View to list the details from one notification.
-    Use the 'notification' variable in the template to access
-    the specific notification here and in the Views below"""
+    def post(self, request, format=None):
+        serializer = RequestStatusSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class RequestCreateView(RequestBaseView, CreateView):
-    """View to create a new notification"""
+class RequestStatusDetail(APIView):
+    """
+    Retrieve, update or delete a request status instance.
+    """
+    def get_object(self, pk):
+        try:
+            return Request_status.objects.get(pk=pk)
+        except Request_status.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        request_status = self.get_object(pk)
+        serializer = RequestStatusSerializer(request_status)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        request_status = self.get_object(pk)
+        serializer = RequestStatusSerializer(request_status, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        request_status = self.get_object(pk)
+        request_status.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class RequestUpdateView(RequestBaseView, UpdateView):
-    """View to update a notification"""
+class RequestStatusHighlight(generics.GenericAPIView):
+    queryset = Request_status.objects.all()
+    renderer_classes = [renderers.StaticHTMLRenderer]
+
+    def get(self, request, *args, **kwargs):
+        request_status = self.get_object()
+        return Response(request_status.highlighted)
 
 
-class RequestDeleteView(RequestBaseView, DeleteView):
-    """View to delete a notification"""
+# Request model
+class RequestList(APIView):
+    """
+    List all requests, or create a new request.
+    """
+    def get(self, request, format=None):
+        requests = Request.objects.all()
+        serializer = RequestSerializer(requests, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = RequestSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RequestDetail(APIView):
+    """
+    Retrieve, update or delete a request instance.
+    """
+    def get_object(self, pk):
+        try:
+            return Request.objects.get(pk=pk)
+        except Request.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        myrequest = self.get_object(pk)
+        serializer = RequestSerializer(myrequest)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        myrequest = self.get_object(pk)
+        serializer = RequestSerializer(myrequest, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        myrequest = self.get_object(pk)
+        myrequest.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class RequestHighlight(generics.GenericAPIView):
+    queryset = Request.objects.all()
+    renderer_classes = [renderers.StaticHTMLRenderer]
+
+    def get(self, request, *args, **kwargs):
+        request = self.get_object()
+        return Response(request.highlighted)

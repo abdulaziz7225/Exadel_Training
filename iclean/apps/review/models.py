@@ -26,3 +26,6 @@ class Review(models.Model):
                 my_list.append((field.verbose_name, Review.objects.get(pk=field.value_from_object(self)).client))
         
         return my_list
+
+    class Meta:
+        ordering = ['created_at']

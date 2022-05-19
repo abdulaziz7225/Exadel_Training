@@ -1,17 +1,11 @@
 from django.urls import path
-from . import views
-
-app_name = 'service'
-
+from rest_framework.urlpatterns import format_suffix_patterns
+from apps.service import views
 
 urlpatterns = [
-    path('', views.ServiceListView.as_view(), name='all'),
-    path('<int:pk>/detail', views.ServiceDetailView.as_view(),
-         name='service_detail'),
-    path('create/', views.ServiceCreateView.as_view(),
-         name='service_create'),
-    path('<int:pk>/update/',
-         views.ServiceUpdateView.as_view(), name='service_update'),
-    path('<int:pk>/delete/',
-         views.ServiceDeleteView.as_view(), name='service_delete'),
+    path('', views.ServiceList.as_view(), name='service-list'),
+    path('<int:pk>/', views.ServiceDetail.as_view(), name='service-detail'),
+    path('<int:pk>/highlight/', views.ServiceHighlight.as_view(), name='service-highlight'),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

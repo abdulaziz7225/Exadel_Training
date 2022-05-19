@@ -26,3 +26,6 @@ class Service(models.Model):
                 my_list.append((field.verbose_name, Service.objects.get(pk=field.value_from_object(self)).company))
         
         return my_list
+
+    class Meta:
+        ordering = ['created_at']

@@ -12,6 +12,9 @@ class Request_status(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
 
 class Request(models.Model):
     name = models.CharField(max_length=100)
@@ -38,3 +41,6 @@ class Request(models.Model):
                 my_list.append((field.verbose_name, Request.objects.get(pk=field.value_from_object(self)).status))
             
         return my_list
+
+    class Meta:
+        ordering = ['created_at']

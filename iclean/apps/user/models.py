@@ -22,6 +22,9 @@ class Role(models.Model):
     def __str__(self):
         return self.get_id_display()
 
+    class Meta:
+        ordering = ['id']
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = None
@@ -56,6 +59,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         return my_list
 
+    class Meta:
+        ordering = ['email']
+
+
 
 class Client(models.Model):
     user = models.OneToOneField(
@@ -69,6 +76,9 @@ class Client(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+    class Meta:
+        ordering = ['user']
+
 
 class Company(models.Model):
     user = models.OneToOneField(
@@ -77,4 +87,7 @@ class Company(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['user']
 

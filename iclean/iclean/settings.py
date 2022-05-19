@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # installed apps
     "debug_toolbar",
     'django_extensions',
+    'rest_framework',
     'apps.notification',
     'apps.request',
     'apps.review',
@@ -139,3 +140,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Customized the User Class
 AUTH_USER_MODEL = 'user.User'
+
+# installed settings
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}

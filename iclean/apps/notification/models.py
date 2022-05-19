@@ -27,3 +27,6 @@ class Notification(models.Model):
                 my_list.append((field.verbose_name, Notification.objects.get(pk=field.value_from_object(self)).request))
         
         return my_list
+
+    class Meta:
+        ordering = ['created_at']
