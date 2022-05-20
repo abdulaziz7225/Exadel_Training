@@ -2,7 +2,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework import renderers, generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from apps.notification.models import Notification
 from apps.notification.serializers import NotificationSerializer
@@ -13,6 +13,7 @@ class NotificationList(APIView):
     """
     List all notifications, or create a new notification.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         notifications = Notification.objects.all()
         serializer = NotificationSerializer(notifications, many=True)
@@ -30,6 +31,7 @@ class NotificationDetail(APIView):
     """
     Retrieve, update or delete a notification instance.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, pk):
         try:
             return Notification.objects.get(pk=pk)

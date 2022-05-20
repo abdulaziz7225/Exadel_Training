@@ -2,7 +2,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework import generics, renderers
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from apps.review.models import Review
 from apps.review.serializers import ReviewSerializer
@@ -13,6 +13,7 @@ class ReviewList(APIView):
     """
     List all reviews, or create a new review.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         reviews = Review.objects.all()
         serializer = ReviewSerializer(reviews, many=True)
@@ -30,6 +31,7 @@ class ReviewDetail(APIView):
     """
     Retrieve, update or delete a review instance.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, pk):
         try:
             return Review.objects.get(pk=pk)

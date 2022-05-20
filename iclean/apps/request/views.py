@@ -2,7 +2,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework import renderers, generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from apps.request.models import Request, Request_status
 from apps.request.serializers import RequestSerializer, RequestStatusSerializer
@@ -12,6 +12,7 @@ class RequestStatusList(APIView):
     """
     List all request statuses, or create a new request status.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         request_status = Request_status.objects.all()
         serializer = RequestStatusSerializer(request_status, many=True)
@@ -29,6 +30,7 @@ class RequestStatusDetail(APIView):
     """
     Retrieve, update or delete a request status instance.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, pk):
         try:
             return Request_status.objects.get(pk=pk)
@@ -61,6 +63,7 @@ class RequestList(APIView):
     """
     List all requests, or create a new request.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         requests = Request.objects.all()
         serializer = RequestSerializer(requests, many=True)
@@ -78,6 +81,7 @@ class RequestDetail(APIView):
     """
     Retrieve, update or delete a request instance.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, pk):
         try:
             return Request.objects.get(pk=pk)

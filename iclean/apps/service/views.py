@@ -2,7 +2,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework import generics, renderers
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from apps.service.models import Service
 from apps.service.serializers import ServiceSerializer
@@ -13,6 +13,7 @@ class ServiceList(APIView):
     """
     List all services, or create a new service.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         services = Service.objects.all()
         serializer = ServiceSerializer(services, many=True)
@@ -30,6 +31,7 @@ class ServiceDetail(APIView):
     """
     Retrieve, update or delete a service instance.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, pk):
         try:
             return Service.objects.get(pk=pk)

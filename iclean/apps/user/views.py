@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from rest_framework import renderers, generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 from apps.user.models import Role, User, Client, Company
@@ -38,6 +38,7 @@ class RoleList(APIView):
     """
     List all roles, or create a new role.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         roles = Role.objects.all()
         serializer = RoleSerializer(roles, many=True)
@@ -55,6 +56,7 @@ class RoleDetail(APIView):
     """
     Retrieve, update or delete a role instance.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, pk):
         try:
             return Role.objects.get(pk=pk)
@@ -89,6 +91,7 @@ class UserList(APIView):
     """
     List all users, or create a new user.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
@@ -106,6 +109,7 @@ class UserDetail(APIView):
     """
     Retrieve, update or delete a user instance.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, pk):
         try:
             return User.objects.get(pk=pk)
@@ -141,6 +145,7 @@ class ClientList(APIView):
     """
     List all clients, or create a new client.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         clients = Client.objects.all()
         serializer = ClientSerializer(clients, many=True)
@@ -158,6 +163,7 @@ class ClientDetail(APIView):
     """
     Retrieve, update or delete a client instance.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, pk):
         try:
             return Client.objects.get(pk=pk)
@@ -192,6 +198,7 @@ class CompanyList(APIView):
     """
     List all companies, or create a new company.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         companies = Company.objects.all()
         serializer = CompanySerializer(companies, many=True)
@@ -209,6 +216,7 @@ class CompanyDetail(APIView):
     """
     Retrieve, update or delete a company instance.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, pk):
         try:
             return Company.objects.get(pk=pk)
