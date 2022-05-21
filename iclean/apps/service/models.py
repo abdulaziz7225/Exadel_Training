@@ -12,6 +12,9 @@ class Service(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['created_at']
+        
     def __str__(self):
         return f"{self.name}"
 
@@ -27,5 +30,3 @@ class Service(models.Model):
         
         return my_list
 
-    class Meta:
-        ordering = ['created_at']

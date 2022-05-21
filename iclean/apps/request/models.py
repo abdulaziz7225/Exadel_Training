@@ -9,11 +9,13 @@ from apps.service.models import Service
 class Request_status(models.Model):
     name = models.CharField(max_length=255)
 
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = 'request statuses'
+
     def __str__(self):
         return self.name
 
-    class Meta:
-        ordering = ['name']
 
 
 class Request(models.Model):
@@ -25,6 +27,9 @@ class Request(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     status = models.ForeignKey(Request_status, on_delete=models.PROTECT, null=True)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['created_at']
 
     def __str__(self):
         return f"{self.name}"
@@ -41,6 +46,3 @@ class Request(models.Model):
                 my_list.append((field.verbose_name, Request.objects.get(pk=field.value_from_object(self)).status))
             
         return my_list
-
-    class Meta:
-        ordering = ['created_at']

@@ -12,6 +12,9 @@ class Review(models.Model):
     client = models.ForeignKey(Client, on_delete=models.PROTECT)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['created_at']
+        
     def __str__(self):
         return f"{self.client} - ({self.created_at})"
 
@@ -27,5 +30,3 @@ class Review(models.Model):
         
         return my_list
 
-    class Meta:
-        ordering = ['created_at']

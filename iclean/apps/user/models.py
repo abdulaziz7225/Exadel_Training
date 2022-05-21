@@ -7,23 +7,18 @@ from .managers import UserManager
 
 # Create your models here.
 class Role(models.Model):
-    ADMIN = 1
-    CLIENT = 2
-    COMPANY = 3
     ROLE_CHOICES = [
-        (ADMIN, 'admin'),
-        (CLIENT, 'client'),
-        (COMPANY, 'company'),
+        ('admin', 'ADMIN'),
+        ('client', 'CLIENT'),
+        ('company', 'COMPANY'),
     ]
-
-    id = models.PositiveSmallIntegerField(
-        primary_key=True, choices=ROLE_CHOICES)
-
-    def __str__(self):
-        return self.get_id_display()
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, null=True)
 
     class Meta:
-        ordering = ['id']
+        ordering = ['role']
+
+    def __str__(self):
+        return self.role.capitalize()
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -43,6 +38,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
+    class Meta:
+        ordering = ['email']
+
     def str(self):
         return self.email
 
@@ -59,10 +57,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         return my_list
 
-    class Meta:
-        ordering = ['email']
-
-
 
 class Client(models.Model):
     user = models.OneToOneField(
@@ -73,11 +67,15 @@ class Client(models.Model):
     house_number = models.PositiveSmallIntegerField()
     apartment = models.CharField(max_length=255)
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
     class Meta:
         ordering = ['user']
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+  
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 class Company(models.Model):
@@ -85,9 +83,10 @@ class Company(models.Model):
         User, primary_key=True, on_delete=models.CASCADE, related_name='company')
     name = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         ordering = ['user']
+        verbose_name_plural = 'companies'
+
+    def __str__(self):
+        return self.name
 

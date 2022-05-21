@@ -1,4 +1,5 @@
 from django.db import models
+
 from apps.request.models import Request
 from apps.user.models import Company
 
@@ -12,6 +13,9 @@ class Notification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     request = models.ForeignKey(Request, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['created_at']
 
     def __str__(self):
         return f"{self.name}"
@@ -27,6 +31,3 @@ class Notification(models.Model):
                 my_list.append((field.verbose_name, Notification.objects.get(pk=field.value_from_object(self)).request))
         
         return my_list
-
-    class Meta:
-        ordering = ['created_at']
