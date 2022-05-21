@@ -21,10 +21,9 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     path('api-auth/', include('rest_framework.urls')),
 
-
-    path('notifications/', include('apps.notification.urls')),
-    path('requests/', include('apps.request.urls')),
-    path('reviews/', include('apps.review.urls')),
-    path('services/', include('apps.service.urls')),
+    # path('notifications/', include('apps.notification.urls')),
+    # path('requests/', include('apps.request.urls')),
+    # path('reviews/', include('apps.review.urls')),
+    # path('services/', include('apps.service.urls')),
     path('', include('apps.user.urls')),
 ]

@@ -5,11 +5,10 @@ from apps.review import views
 
 
 # Create a router and register our viewsets with it.
-router = DefaultRouter()
-router.register(r'reviews', views.ReviewViewSet,basename="reviews")
+# router = DefaultRouter()
+# router.register(r'reviews', views.ReviewViewSet,basename="reviews")
 
 # The API URLs are now determined automatically by the router.
-urlpatterns = [
-    path('', include(router.urls)),
-]
-
+# urlpatterns = [
+#     path('', include(router.urls)),
+# ]

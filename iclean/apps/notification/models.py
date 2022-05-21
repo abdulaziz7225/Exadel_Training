@@ -13,6 +13,9 @@ class Notification(models.Model):
     request = models.ForeignKey(Request, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['created_at']
+        
     def __str__(self):
         return f"{self.name}"
 
@@ -28,5 +31,3 @@ class Notification(models.Model):
         
         return my_list
 
-    class Meta:
-        ordering = ['created_at']
