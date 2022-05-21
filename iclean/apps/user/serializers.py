@@ -17,8 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
                   'country', 'city', 'is_staff', 'is_active']
 
 
-class ClientSerializer(serializers.HyperlinkedModelSerializer):
-    user = serializers.SlugRelatedField(slug_field='id', queryset=User.objects.all())
+class ClientSerializer(serializers.ModelSerializer):
     # user = UserSerializer()
     class Meta:
         model = Client
@@ -27,7 +26,6 @@ class ClientSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(slug_field='id', queryset=User.objects.all())
     # user = UserSerializer()
     class Meta:
         model = Company
