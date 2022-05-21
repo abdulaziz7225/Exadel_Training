@@ -17,7 +17,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(slug_field='id', queryset=User.objects.all())
     # user = UserSerializer()
     class Meta:
         model = Client
@@ -25,7 +24,6 @@ class ClientSerializer(serializers.ModelSerializer):
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(slug_field='id', queryset=User.objects.all())
     # user = UserSerializer()
     class Meta:
         model = Company
