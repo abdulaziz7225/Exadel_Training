@@ -10,3 +10,4 @@ class ServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = ['id', 'name', 'type_of_service',
                   'cost_of_service', 'created_at', 'company']
+        # read_only_fields = ['company']

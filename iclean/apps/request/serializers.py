@@ -12,7 +12,7 @@ class RequestStatusSerializer(serializers.ModelSerializer):
 
 
 class RequestSerializer(serializers.ModelSerializer):
-    client = serializers.SlugRelatedField(slug_field='full_name', queryset=Client.objects.all())
+    # client = serializers.SlugRelatedField(slug_field='full_name', queryset=Client.objects.all())
     company = serializers.SlugRelatedField(slug_field='name', queryset=Company.objects.all())
     status = serializers.SlugRelatedField(slug_field='name', queryset=Request_status.objects.all())
     service = serializers.SlugRelatedField(slug_field='name', queryset=Service.objects.all())
