@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+# from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
@@ -13,7 +13,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     This viewset automatically provides 'list', 'create', 'retrieve',
     'update' and 'destroy' actions.
     """
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     

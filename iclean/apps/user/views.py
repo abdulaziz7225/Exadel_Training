@@ -15,7 +15,7 @@ class RoleViewSet(viewsets.ModelViewSet):
     This viewset automatically provides 'list', 'create', 'retrieve',
     'update' and 'destroy' actions.
     """
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
 
@@ -66,7 +66,7 @@ class UserViewSet(viewsets.ModelViewSet):
     This viewset automatically provides 'list', 'create', 'retrieve',
     'update' and 'destroy' actions.
     """
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -95,7 +95,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     This viewset automatically provides 'list', 'create', 'retrieve',
     'update' and 'destroy' actions.
     """
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
@@ -124,7 +124,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
     This viewset automatically provides 'list', 'create', 'retrieve',
     'update' and 'destroy' actions.
     """
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
