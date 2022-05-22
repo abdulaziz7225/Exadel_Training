@@ -10,8 +10,8 @@ class Notification(models.Model):
     details = models.TextField()
     viewed_by_company = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    request = models.ForeignKey(Request, on_delete=models.CASCADE)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='notifications')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='notifications')
 
     class Meta:
         ordering = ['created_at']

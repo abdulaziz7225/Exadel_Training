@@ -24,7 +24,7 @@ class Role(models.Model):
 class User(AbstractBaseUser, PermissionsMixin):
     username = None
     email = models.EmailField(_('email address'), unique=True)
-    role = models.ForeignKey(Role, on_delete=models.PROTECT, null=True)
+    role = models.ForeignKey(Role, on_delete=models.PROTECT, null=True, related_name='users')
     phone = models.CharField(max_length=255, null=True)
     country = models.CharField(max_length=255, null=True)
     city = models.CharField(max_length=255, null=True)

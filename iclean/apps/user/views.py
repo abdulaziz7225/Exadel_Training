@@ -5,7 +5,6 @@ from apps.user.models import Role, User, Client, Company
 from apps.user.serializers import RoleSerializer, UserSerializer, ClientSerializer, CompanySerializer
 
 
-
 """
 Role model
 """
@@ -31,6 +30,8 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id).all()
 
 """
 Client model
@@ -43,6 +44,9 @@ class ClientViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+
+    def get_queryset(self):
+        return Client.objects.select_related('user').filter(user=self.request.user.id)
 
 
 """
@@ -57,3 +61,5 @@ class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
+    def get_queryset(self):
+        return Company.objects.select_related('user').filter(user=self.request.user.id)

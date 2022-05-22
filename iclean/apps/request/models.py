@@ -22,10 +22,10 @@ class Request(models.Model):
     # type_of_request = models.CharField(max_length=255)
     total_area = models.DecimalField(max_digits=6, decimal_places=2, default=0, validators=[MinValueValidator(0.0)])
     created_at = models.DateTimeField(auto_now_add=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    status = models.ForeignKey(Request_status, on_delete=models.PROTECT, null=True)
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='requests')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='requests')
+    status = models.ForeignKey(Request_status, on_delete=models.PROTECT, related_name='requests', null=True)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='requests')
 
     class Meta:
         ordering = ['created_at']

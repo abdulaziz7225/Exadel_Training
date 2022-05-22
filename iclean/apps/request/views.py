@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from django.db.models import Q
 
 from apps.request.models import Request, Request_status
 from apps.request.serializers import RequestSerializer, RequestStatusSerializer
@@ -26,4 +27,5 @@ class RequestViewSet(viewsets.ModelViewSet):
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
 
-
+    def get_queryset(self):
+        return Request.objects.filter(Q(client=self.request.user.id) | Q(company=self.request.user.id)).all()
