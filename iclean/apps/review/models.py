@@ -11,7 +11,8 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     client = models.ForeignKey(Client, on_delete=models.PROTECT, related_name='reviews')
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='reviews')
-
+    slug = models.SlugField(null=True)
+    
     class Meta:
         ordering = ['created_at']
         

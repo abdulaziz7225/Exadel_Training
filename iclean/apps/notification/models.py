@@ -12,7 +12,8 @@ class Notification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='notifications')
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='notifications')
-
+    slug = models.SlugField(null=True)
+    
     class Meta:
         ordering = ['created_at']
         

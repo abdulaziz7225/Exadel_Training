@@ -11,6 +11,7 @@ class Service(models.Model):
     cost_of_service = models.DecimalField(max_digits=8, decimal_places=2, default=0, validators=[MinValueValidator(0.0)])
     created_at = models.DateTimeField(auto_now_add=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='services')
+    slug = models.SlugField(null=True)
 
     class Meta:
         ordering = ['created_at']
