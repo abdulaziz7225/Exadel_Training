@@ -36,12 +36,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles', # required for serving swagger ui's css/js files
     
     # third party libraries
+    'rest_framework',
     "debug_toolbar",
     'django_extensions',
-    'rest_framework',
+    'drf_yasg',
 
     # installed apps
     'apps.notification',
