@@ -8,8 +8,8 @@ from apps.request import views as request_views
 urlpatterns = format_suffix_patterns([
      path('', views.api_root),
 
-     path('request-statuses/', request_views.RequestStatusList.as_view(), name='request-status-list'),
-     path('request-statuses/<int:pk>/', request_views.RequestStatusDetail.as_view(), name='request-status-detail'),
+     path('request-statuses/', request_views.RequestStatusList.as_view(), name='requeststatus-list'),
+     path('request-statuses/<int:pk>/', request_views.RequestStatusDetail.as_view(), name='requeststatus-detail'),
 
      path('users/', views.UserList.as_view(), name='user-list'),
      path('users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),

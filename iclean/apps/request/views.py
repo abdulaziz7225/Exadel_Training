@@ -3,16 +3,16 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from apps.request.permissions import AuthorAllStaffAllButEditOrReadOnly
 
-from apps.request.models import Request, Request_status
+from apps.request.models import Request, RequestStatus
 from apps.request.serializers import RequestSerializer, RequestStatusSerializer
 
-# Request_status model
+# RequestStatus model
 class RequestStatusList(generics.ListCreateAPIView):
-    queryset = Request_status.objects.all()
+    queryset = RequestStatus.objects.all()
     serializer_class = RequestStatusSerializer
 
 class RequestStatusDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Request_status.objects.all()
+    queryset = RequestStatus.objects.all()
     serializer_class = RequestStatusSerializer
 
 

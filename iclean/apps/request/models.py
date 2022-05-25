@@ -6,12 +6,12 @@ from apps.service.models import Service
 
 
 # Create your models here.
-class Request_status(models.Model):
+class RequestStatus(models.Model):
     name = models.CharField(max_length=255)
 
     class Meta:
         ordering = ['name']
-        verbose_name_plural = 'request statuses'
+        verbose_name_plural = 'requeststatuses'
 
     def __str__(self):
         return self.name
@@ -24,7 +24,7 @@ class Request(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='requests')
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='requests')
-    status = models.ForeignKey(Request_status, on_delete=models.PROTECT, null=True, related_name='requests')
+    status = models.ForeignKey(RequestStatus, on_delete=models.PROTECT, null=True, related_name='requests')
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='requests')
 
     class Meta:

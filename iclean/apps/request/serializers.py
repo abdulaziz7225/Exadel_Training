@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
-from apps.request.models import Request_status, Request
+from apps.request.models import RequestStatus, Request
 
 
 class RequestStatusSerializer(serializers.HyperlinkedModelSerializer):
     requests = serializers.HyperlinkedRelatedField(many=True, view_name='request-detail', read_only=True)
     class Meta:
-        model = Request_status
+        model = RequestStatus
         fields = ['url', 'id', 'name', 'requests']
 
 class RequestSerializer(serializers.HyperlinkedModelSerializer):

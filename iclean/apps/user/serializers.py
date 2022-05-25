@@ -12,12 +12,12 @@ class RoleSerializer(serializers.HyperlinkedModelSerializer):
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     role = serializers.ReadOnlyField(source='role.name')
-    clients = serializers.HyperlinkedRelatedField(many=True, view_name='client-detail', read_only=True)
-    companies = serializers.HyperlinkedRelatedField(many=True, view_name='company-detail', read_only=True)
+    # clients = serializers.HyperlinkedRelatedField(many=True, view_name='client-detail', read_only=True)
+    # companies = serializers.HyperlinkedRelatedField(many=True, view_name='company-detail', read_only=True)
     class Meta:
         model = User
         fields = ['url', 'id', 'email', 'role', 'phone', 'country', 'city', 
-                        'is_staff', 'is_active', 'clients', 'companies']
+                        'is_staff', 'is_active'] #, 'clients', 'companies']
 
 
 class ClientSerializer(serializers.HyperlinkedModelSerializer):

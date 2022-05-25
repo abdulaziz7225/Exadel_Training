@@ -17,7 +17,7 @@ def api_root(request, format=None):
     return Response({
         'notification': reverse('notification-list', request=request, format=format),
         'review': reverse('review-list', request=request, format=format),
-        'status': reverse('request-status-list', request=request, format=format),
+        'status': reverse('requeststatus-list', request=request, format=format),
         'request': reverse('request-list', request=request, format=format),
         'service': reverse('service-list', request=request, format=format),
         'role': reverse('role-list', request=request, format=format),
