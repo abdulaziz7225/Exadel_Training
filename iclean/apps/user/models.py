@@ -24,13 +24,11 @@ class Role(models.Model):
 class User(AbstractBaseUser, PermissionsMixin):
     username = None
     email = models.EmailField(_('email address'), unique=True)
-    role = models.ForeignKey(Role, on_delete=models.PROTECT, null=True)
+    role = models.ForeignKey(Role, on_delete=models.PROTECT, null=True, related_name='users')
     phone = models.CharField(max_length=255, null=True)
     country = models.CharField(max_length=255, null=True)
     city = models.CharField(max_length=255, null=True)
-    # Designates whether the user can log into this admin site.
     is_staff = models.BooleanField(default=False)
-    # Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
     is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
@@ -44,23 +42,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def str(self):
         return self.email
 
-    def get_fields(self):
-        my_list = []
-
-        for field in self.__class__._meta.fields[1:]:
-            if field.verbose_name != 'role':
-                my_list.append(
-                    (field.verbose_name, field.value_from_object(self)))
-            else:
-                my_list.append((field.verbose_name, User.objects.get(
-                    pk=field.value_from_object(self)).role))
-
-        return my_list
-
 
 class Client(models.Model):
     user = models.OneToOneField(
-        User, primary_key=True, on_delete=models.CASCADE, related_name='client')
+        User, primary_key=True, on_delete=models.CASCADE, related_name='clients')
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
@@ -73,14 +58,18 @@ class Client(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
   
-    @property
-    def full_name(self):
-        return f"{self.first_name} {self.last_name}"
+    # @property
+    # def full_name(self):
+    #     return f"{self.first_name} {self.last_name}"
+    
+    # @property
+    # def email(self):
+    #     return f"{self.user.email}"
 
 
 class Company(models.Model):
     user = models.OneToOneField(
-        User, primary_key=True, on_delete=models.CASCADE, related_name='company')
+        User, primary_key=True, on_delete=models.CASCADE, related_name='companies')
     name = models.CharField(max_length=255)
 
     class Meta:
