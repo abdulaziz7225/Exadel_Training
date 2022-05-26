@@ -26,9 +26,14 @@ class NotificationList(generics.ListCreateAPIView):
     def create(self, request):
         is_staff = getattr(self.request.user, "is_staff", None)
         is_client = getattr(self.request.user, "clients", None)
-        if is_staff or is_client:
+        is_company = getattr(self.request.user, "companys", None)
+        if is_staff or is_client or is_company:
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
+            if is_client and not (serializer.validated_data["request"].client == self.request.user):
+                return Response({"message": "You don't have permission to create notification with another client"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            if is_company and not (serializer.validated_data["company"].user == self.request.user):
+                return Response({"message": "You don't have permission to create notification with another company"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
@@ -50,7 +55,8 @@ class NotificationDetail(generics.RetrieveUpdateDestroyAPIView):
             instance = self.get_object()
             serializer = self.get_serializer(instance, data=request.data, partial=partial)
             serializer.is_valid(raise_exception=True)
-            # print(serializer.validated_data)
+            if is_client and not (serializer.validated_data["request"].client == self.request.user):
+                return Response({"message": "You don't have permission to update notification with another client"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
             if is_company and not (serializer.validated_data["company"].user == self.request.user):
                 return Response({"message": "You don't have permission to update the company of notification"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
             self.perform_update(serializer)
@@ -67,7 +73,8 @@ class NotificationDetail(generics.RetrieveUpdateDestroyAPIView):
     def destroy(self, request, *args, **kwargs):
         is_staff = getattr(self.request.user, "is_staff", None)
         is_client = getattr(self.request.user, "clients", None)
-        if is_staff or is_client:
+        is_company = getattr(self.request.user, "companys", None)
+        if is_staff or is_client or is_company:
             instance = self.get_object()
             self.perform_destroy(instance)
             return Response({"message": "Notification has been deleted"}, status=status.HTTP_204_NO_CONTENT)

@@ -3,6 +3,7 @@ from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
 
+# from apps.review.permissions import IsOwnerOrReadOnly
 from apps.review.models import Review
 from apps.review.serializers import ReviewSerializer
 
@@ -19,19 +20,22 @@ class ReviewList(generics.ListCreateAPIView):
 
     def create(self, request):
         is_staff = getattr(self.request.user, "is_staff", None)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        if not (is_staff or serializer.validated_data["client"].user == self.request.user):
-            return Response({"message": "You don't have permission to create review"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        is_client = getattr(self.request.user, "clients", None)
+        if is_staff or is_client:    
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            if not (is_staff or serializer.validated_data["client"].user == self.request.user):
+                return Response({"message": "You don't have permission to create review"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response({"message": "You don't have permission to create review"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-
+    # permission_classes = [IsOwnerOrReadOnly]
     def update(self, request, *args, **kwargs):
         is_staff = getattr(self.request.user, "is_staff", None)
         is_client = getattr(self.request.user, "clients", None)
