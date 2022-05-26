@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
 from apps.request.models import RequestStatus, Request
+from apps.service.models import Service
+from apps.user.models import Client, Company
 
 
 class RequestStatusSerializer(serializers.HyperlinkedModelSerializer):
@@ -10,10 +12,14 @@ class RequestStatusSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'id', 'name', 'requests']
 
 class RequestSerializer(serializers.HyperlinkedModelSerializer):
-    client = serializers.ReadOnlyField(source='client.first_name')
-    company = serializers.ReadOnlyField(source='company.name')
-    status = serializers.ReadOnlyField(source='status.name')
-    service = serializers.ReadOnlyField(source='service.name')
+    # client = serializers.ReadOnlyField(source='client.user.id')
+    # company = serializers.ReadOnlyField(source='company.name')
+    # status = serializers.ReadOnlyField(source='status.name')
+    # service = serializers.ReadOnlyField(source='service.name')
+    client = serializers.SlugRelatedField(slug_field='first_name', queryset=Client.objects.all())
+    company = serializers.SlugRelatedField(slug_field='name', queryset=Company.objects.all())
+    status = serializers.SlugRelatedField(slug_field='name', queryset=RequestStatus.objects.all())
+    service = serializers.SlugRelatedField(slug_field='name', queryset=Service.objects.all())
     notifications = serializers.HyperlinkedRelatedField(many=True, view_name='notification-detail', read_only=True)
     class Meta:
         model = Request

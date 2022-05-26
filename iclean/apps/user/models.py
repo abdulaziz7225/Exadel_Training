@@ -62,14 +62,14 @@ class Client(models.Model):
     # def full_name(self):
     #     return f"{self.first_name} {self.last_name}"
     
-    # @property
-    # def email(self):
-    #     return f"{self.user.email}"
+    @property
+    def email(self):
+        return f"{self.user.email}"
 
 
 class Company(models.Model):
     user = models.OneToOneField(
-        User, primary_key=True, on_delete=models.CASCADE, related_name='companies')
+        User, primary_key=True, on_delete=models.CASCADE, related_name='companys')
     name = models.CharField(max_length=255)
 
     class Meta:
