@@ -3,15 +3,11 @@ from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
 
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
-from apps.review.permissions import IsOwnerOrReadOnly
-
 from apps.review.models import Review
 from apps.review.serializers import ReviewSerializer
 
 
 class ReviewList(generics.ListCreateAPIView):
-    # permission_classes = [IsAuthenticatedOrReadOnly | IsAdminUser]
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
@@ -31,17 +27,15 @@ class ReviewList(generics.ListCreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    def perform_create(self, serializer):
-        serializer.save(client=self.request.user)
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = [IsAuthenticatedOrReadOnly | IsAdminUser]
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
     def update(self, request, *args, **kwargs):
         is_staff = getattr(self.request.user, "is_staff", None)
-        if is_staff or getattr(self.request.user, "client", None):
+        is_client = getattr(self.request.user, "clients", None)
+        if is_staff or is_client:
             partial = kwargs.pop('partial', False)
             instance = self.get_object()
             serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -59,10 +53,11 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         is_staff = getattr(self.request.user, "is_staff", None)
-        if is_staff or getattr(self.request.user, "client", None):
+        is_client = getattr(self.request.user, "clients", None)
+        if is_staff or is_client:
             instance = self.get_object()
             self.perform_destroy(instance)
-            return Response({"message": "Item has been deleted"}, status=status.HTTP_204_NO_CONTENT)
+            return Response({"message": "Review has been deleted"}, status=status.HTTP_204_NO_CONTENT)
         return Response({"message": "You don't have permission to delete review"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 

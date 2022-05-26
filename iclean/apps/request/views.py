@@ -3,7 +3,6 @@ from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
 
-# from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 
 from apps.request.models import Request, RequestStatus
 from apps.request.serializers import RequestSerializer, RequestStatusSerializer
@@ -54,7 +53,7 @@ class RequestStatusDetail(generics.RetrieveUpdateDestroyAPIView):
         if is_staff:
             instance = self.get_object()
             self.perform_destroy(instance)
-            return Response({"message": "Item has been deleted"}, status=status.HTTP_204_NO_CONTENT)
+            return Response({"message": "Request status has been deleted"}, status=status.HTTP_204_NO_CONTENT)
         else:
             return Response({"message": "You don't have permission to delete request status"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
@@ -84,35 +83,20 @@ class RequestList(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-    # def perform_create(self, serializer):
-    #     serializer.save(client=self.request.user)
-
-
 class RequestDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
     
-    # def retrieve(self, request, *args, **kwargs):
-    #     is_staff = getattr(self.request.user, "is_staff", None)
-    #     is_client = getattr(self.request.user, "clients", None)
-    #     if is_staff or is_client:
-    #         instance = self.get_object()
-    #         serializer = self.get_serializer(instance)
-    #         return Response(serializer.data)
-    #     return Response({"message": "You don't have permission to retrieve notification"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
     def update(self, request, *args, **kwargs):
         is_staff = getattr(self.request.user, "is_staff", None)
         is_client = getattr(self.request.user, "clients", None)
         is_company = getattr(self.request.user, "companys", None)
-        print(is_staff, is_client, is_company, self.request.user.clients)
         if is_staff or is_client or is_company:
             partial = kwargs.pop('partial', False)
             instance = self.get_object()
             serializer = self.get_serializer(instance, data=request.data, partial=partial)
             serializer.is_valid(raise_exception=True)
-            if not (is_staff or serializer.validated_data["companys"].name == self.request.user.company.name):
+            if is_company and not (serializer.validated_data["company"].user == self.request.user):
                 return Response({"message": "You don't have permission to update the company of request"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
             self.perform_update(serializer)
 
@@ -131,5 +115,5 @@ class RequestDetail(generics.RetrieveUpdateDestroyAPIView):
         if is_staff or is_client:
             instance = self.get_object()
             self.perform_destroy(instance)
-            return Response({"message": "Item has been deleted"}, status=status.HTTP_204_NO_CONTENT)
+            return Response({"message": "Request has been deleted"}, status=status.HTTP_204_NO_CONTENT)
         return Response({"message": "You don't have permission to delete request"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

@@ -1,10 +1,12 @@
 from rest_framework import serializers
 
 from apps.service.models import Service
+from apps.user.models import Company
 
 
 class ServiceSerializer(serializers.HyperlinkedModelSerializer):
-    company = serializers.ReadOnlyField(source='company.name')
+    # company = serializers.ReadOnlyField(source='company.name')
+    company = serializers.SlugRelatedField(slug_field='name', queryset=Company.objects.all())
     requests = serializers.HyperlinkedRelatedField(many=True, view_name='request-detail', read_only=True)
     class Meta:
         model = Service
