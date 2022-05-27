@@ -132,7 +132,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     """
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [IsStaff | IsClientUser | IsCompanyUser]
+    permission_classes = [IsStaff | IsClient | IsCompany]
 
 
     def get_queryset(self):
@@ -140,7 +140,7 @@ class ClientViewSet(viewsets.ModelViewSet):
         if is_staff:
             return Client.objects.all()
         return Client.objects.select_related('user').filter(user=self.request.user.id)
-    
+
 
     def create(self, request):
         is_staff = getattr(self.request.user, "is_staff", None)
@@ -194,7 +194,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
     """
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
-    permission_classes = [IsStaff | IsClientUser | IsCompanyUser]
+    permission_classes = [IsStaff | IsClient | IsCompany]
 
 
     def get_queryset(self):
@@ -202,7 +202,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
         if is_staff:
             return Company.objects.all()
         return Company.objects.select_related('user').filter(user=self.request.user.id)
- 
+
 
     def create(self, request):
         is_staff = getattr(self.request.user, "is_staff", None)

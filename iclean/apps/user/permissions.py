@@ -22,7 +22,7 @@ class IsClientUser(permissions.BasePermission):
         return False
 
     def has_object_permission(self, request, view, obj):
-        if obj.email == request.user.email:
+        if obj.user.email == request.user.email:
             return True
         return False
 
@@ -35,7 +35,7 @@ class IsCompanyUser(permissions.BasePermission):
         return False
 
     def has_object_permission(self, request, view, obj):
-        if obj.email == request.user.email:
+        if obj.user.email == request.user.email:
             return True
         return False
 
