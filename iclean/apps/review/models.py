@@ -17,17 +17,3 @@ class Review(models.Model):
         
     def __str__(self):
         return f"{self.client} - ({self.created_at})"
-
-    def get_fields(self):
-        
-        my_list = []
-
-        for field in self.__class__._meta.fields[1:]:
-            if field.verbose_name != 'client':
-                my_list.append((field.verbose_name, field.value_from_object(self)))
-            else:
-                my_list.append((field.verbose_name, Review.objects.get(pk=field.value_from_object(self)).client))
-        
-        return my_list
-
-

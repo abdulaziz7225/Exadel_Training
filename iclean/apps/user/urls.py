@@ -13,7 +13,7 @@ router = DefaultRouter()
 
 router.register(r'notifications', NotificationViewSet,basename="notifications")
 router.register(r'requests', RequestViewSet,basename="requests")
-router.register(r'request-statuses', RequestStatusViewSet,basename="request-statuses")
+router.register(r'request-statuses', RequestStatusViewSet,basename="requeststatuses")
 router.register(r'reviews', ReviewViewSet, basename="reviews")
 router.register(r'services', ServiceViewSet,basename="services")
 
