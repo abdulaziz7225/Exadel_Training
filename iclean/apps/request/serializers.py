@@ -12,10 +12,6 @@ class RequestStatusSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'id', 'name', 'requests']
 
 class RequestSerializer(serializers.HyperlinkedModelSerializer):
-    # client = serializers.ReadOnlyField(source='client.user.id')
-    # company = serializers.ReadOnlyField(source='company.name')
-    # status = serializers.ReadOnlyField(source='status.name')
-    # service = serializers.ReadOnlyField(source='service.name')
     client = serializers.SlugRelatedField(slug_field='first_name', queryset=Client.objects.all())
     company = serializers.SlugRelatedField(slug_field='name', queryset=Company.objects.all())
     status = serializers.SlugRelatedField(slug_field='name', queryset=RequestStatus.objects.all())

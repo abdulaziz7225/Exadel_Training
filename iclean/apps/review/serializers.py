@@ -5,8 +5,6 @@ from apps.user.models import Client, Company
 
 
 class ReviewSerializer(serializers.HyperlinkedModelSerializer):
-    # client = serializers.ReadOnlyField(source='client.first_name')
-    # company = serializers.ReadOnlyField(source='company.name')
     client = serializers.SlugRelatedField(slug_field='first_name', queryset=Client.objects.all())
     company = serializers.SlugRelatedField(slug_field='name', queryset=Company.objects.all())
     class Meta:

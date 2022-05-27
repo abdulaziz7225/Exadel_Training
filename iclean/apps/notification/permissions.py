@@ -22,7 +22,7 @@ class IsClient(permissions.BasePermission):
         return False
 
     def has_object_permission(self, request, view, obj):
-        if obj.client.user == request.user:
+        if obj.request.client.user == request.user:
             return True
         return False
 
@@ -33,8 +33,7 @@ class IsCompany(permissions.BasePermission):
         if request.user.is_authenticated:
             return True
         return False
-
     def has_object_permission(self, request, view, obj):
-        if obj.company.user == request.user and request.method in permissions.SAFE_METHODS:
+        if obj.company.user == request.user:
             return True
         return False

@@ -19,7 +19,6 @@ class RequestStatus(models.Model):
 
 class Request(models.Model):
     name = models.CharField(max_length=100)
-    # type_of_request = models.CharField(max_length=255)
     total_area = models.DecimalField(max_digits=6, decimal_places=2, default=0, validators=[MinValueValidator(0.0)])
     created_at = models.DateTimeField(auto_now_add=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='requests')

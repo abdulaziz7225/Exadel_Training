@@ -2,8 +2,9 @@ from rest_framework import generics
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
-
+from apps.request.permissions import IsStaff, IsClient, IsCompany 
 from apps.request.models import Request, RequestStatus
 from apps.request.serializers import RequestSerializer, RequestStatusSerializer
 
@@ -14,6 +15,8 @@ RequestStatus model
 class RequestStatusList(generics.ListCreateAPIView):
     queryset = RequestStatus.objects.all()
     serializer_class = RequestStatusSerializer
+    permission_classes = [IsAuthenticated]
+
 
     def create(self, request):
         is_staff = getattr(self.request.user, "is_staff", None)
@@ -29,6 +32,8 @@ class RequestStatusList(generics.ListCreateAPIView):
 class RequestStatusDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = RequestStatus.objects.all()
     serializer_class = RequestStatusSerializer
+    permission_classes = [IsAuthenticated]
+
 
     def update(self, request, *args, **kwargs):
         is_staff = getattr(self.request.user, "is_staff", None)
@@ -64,6 +69,8 @@ Request model
 class RequestList(generics.ListCreateAPIView):
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
+    permission_classes = [IsStaff | IsClient | IsCompany]
+
 
     def get_queryset(self):
         is_staff = getattr(self.request.user, "is_staff", None)
@@ -78,7 +85,7 @@ class RequestList(generics.ListCreateAPIView):
         if is_staff or is_client: 
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            if not (is_staff or serializer.validated_data["client"].user == self.request.user):
+            if is_client and not (serializer.validated_data["client"].user == self.request.user):
                 return Response({"message": "You don't have permission to create request with another client"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
@@ -89,7 +96,9 @@ class RequestList(generics.ListCreateAPIView):
 class RequestDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
-    
+    permission_classes = [IsStaff | IsClient | IsCompany]
+
+
     def update(self, request, *args, **kwargs):
         is_staff = getattr(self.request.user, "is_staff", None)
         is_client = getattr(self.request.user, "clients", None)
@@ -99,10 +108,10 @@ class RequestDetail(generics.RetrieveUpdateDestroyAPIView):
             instance = self.get_object()
             serializer = self.get_serializer(instance, data=request.data, partial=partial)
             serializer.is_valid(raise_exception=True)
-            if is_client and not (serializer.validated_data["client"] == self.request.user):
-                return Response({"message": "You don't have permission to update another client's request"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            if is_client and not (serializer.validated_data["client"].user == self.request.user):
+                return Response({"message": "You don't have permission to update the client of the request"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
             if is_company and not (serializer.validated_data["company"].user == self.request.user):
-                return Response({"message": "You don't have permission to update another company's of request"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return Response({"message": "You don't have permission to update the company of the request"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
             self.perform_update(serializer)
 
             if getattr(instance, '_prefetched_objects_cache', None):

@@ -6,8 +6,6 @@ from apps.user.models import Company
 
 
 class NotificationSerializer(serializers.HyperlinkedModelSerializer):
-    # request = serializers.ReadOnlyField(source='request.name')
-    # company = serializers.ReadOnlyField(source='company.name')
     request = serializers.SlugRelatedField(slug_field='name', queryset=Request.objects.all())
     company = serializers.SlugRelatedField(slug_field='name', queryset=Company.objects.all())
     class Meta:
