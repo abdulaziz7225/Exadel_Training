@@ -25,6 +25,7 @@ class Request(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='requests')
     status = models.ForeignKey(RequestStatus, on_delete=models.PROTECT, null=True, related_name='requests')
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='requests')
+    slug = models.SlugField(null=True)
 
     class Meta:
         ordering = ['created_at']
