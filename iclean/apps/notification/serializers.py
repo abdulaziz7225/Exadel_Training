@@ -5,10 +5,9 @@ from apps.request.models import Request
 from apps.user.models import Company
 
 
-class NotificationSerializer(serializers.ModelSerializer):
+class NotificationSerializer(serializers.HyperlinkedModelSerializer):
     request = serializers.SlugRelatedField(slug_field='name', queryset=Request.objects.all())
     company = serializers.SlugRelatedField(slug_field='name', queryset=Company.objects.all())
     class Meta:
         model = Notification
-        fields = ['id', 'name', 'details', 'viewed_by_company',
-                  'created_at', 'request', 'company']
+        fields = ['url', 'id', 'name', 'details', 'viewed_by_company', 'created_at', 'request', 'company']
