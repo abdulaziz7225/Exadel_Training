@@ -19,8 +19,8 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
 
     def get_queryset(self):
-        if getattr(self.request.user, "company", None):
-            company = self.request.user.company
+        if getattr(self.request.user, "companys", None):
+            company = self.request.user.companys
             return Service.objects.filter(company=company.user.id).all()
         return Service.objects.all()
 
