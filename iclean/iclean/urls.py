@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('offer/', include('apps.offer.urls')),
+    path('__debug__/', include('debug_toolbar.urls')),
+    path('notification/', include('apps.notification.urls')),
     path('request/', include('apps.request.urls')),
     path('review/', include('apps.review.urls')),
+    path('service/', include('apps.service.urls')),
     path('user/', include('apps.user.urls')),
 ]

@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x&7$l+n_1wnmrh(n3o^=i+a27q(yraww%%e%d#3+otq%_%b=_6'
+SECRET_KEY = 'django-insecure-pw$%n2qxo%kur(%@a1@(znfgbkeza7=$*x26*4zm-rb0l2j0x3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # installed apps
-    'apps.offer',
-    'apps.review',
+    "debug_toolbar",
+    'apps.notification',
     'apps.request',
+    'apps.review',
+    'apps.service',
     'apps.user',
 ]
 
@@ -52,6 +54,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+]
+
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
 ]
 
 ROOT_URLCONF = 'iclean.urls'
