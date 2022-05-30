@@ -1,6 +1,4 @@
-from rest_framework.decorators import api_view
-from rest_framework.reverse import reverse
-from rest_framework import generics
+from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -9,29 +7,14 @@ from apps.user.permissions import IsStaff, IsClientUser, IsCompanyUser, IsClient
 from apps.user.models import Role, User, Client, Company
 from apps.user.serializers import RoleSerializer, UserSerializer, ClientSerializer, CompanySerializer
 
-
-"""
-root api
-"""
-@api_view(['GET'])
-def api_root(request, format=None):
-    return Response({
-        'notification': reverse('notification-list', request=request, format=format),
-        'review': reverse('review-list', request=request, format=format),
-        'status': reverse('requeststatus-list', request=request, format=format),
-        'request': reverse('request-list', request=request, format=format),
-        'service': reverse('service-list', request=request, format=format),
-        'role': reverse('role-list', request=request, format=format),
-        'user': reverse('user-list', request=request, format=format),
-        'client': reverse('client-list', request=request, format=format),
-        'company': reverse('company-list', request=request, format=format),
-    })
-
-
 """
 Role model
-""" 
-class RoleList(generics.ListCreateAPIView):
+"""
+class RoleViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
     permission_classes = [IsAuthenticated]
@@ -46,12 +29,6 @@ class RoleList(generics.ListCreateAPIView):
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         return Response({"message": "You don't have permission to create role"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
-class RoleDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Role.objects.all()
-    serializer_class = RoleSerializer
-    permission_classes = [IsAuthenticated]
 
 
     def update(self, request, *args, **kwargs):
@@ -84,11 +61,15 @@ class RoleDetail(generics.RetrieveUpdateDestroyAPIView):
 """
 User model 
 """
-class UserList(generics.ListCreateAPIView):
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsStaff | IsClientUser | IsCompanyUser]
-    
+
 
     def get_queryset(self):
         is_staff = getattr(self.request.user, "is_staff", None)
@@ -106,12 +87,6 @@ class UserList(generics.ListCreateAPIView):
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         return Response({"message": "You don't have permission to create user"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [IsStaff | IsClientUser | IsCompanyUser]
 
 
     def update(self, request, *args, **kwargs):
@@ -149,18 +124,23 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 
 """
 Client model
-"""  
-class ClientList(generics.ListCreateAPIView):
+"""
+class ClientViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
     permission_classes = [IsStaff | IsClient | IsCompany]
-    
+
+
     def get_queryset(self):
         is_staff = getattr(self.request.user, "is_staff", None)
         if is_staff:
             return Client.objects.all()
         return Client.objects.select_related('user').filter(user=self.request.user.id)
-    
+
 
     def create(self, request):
         is_staff = getattr(self.request.user, "is_staff", None)
@@ -172,11 +152,6 @@ class ClientList(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         return Response({"message": "You don't have permission to create client"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-
-class ClientDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Client.objects.all()
-    serializer_class = ClientSerializer
-    permission_classes = [IsStaff | IsClient | IsCompany]
 
     def update(self, request, *args, **kwargs):
         is_staff = getattr(self.request.user, "is_staff", None)
@@ -212,17 +187,22 @@ class ClientDetail(generics.RetrieveUpdateDestroyAPIView):
 """
 Company model 
 """
-class CompanyList(generics.ListCreateAPIView):
+class CompanyViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
     permission_classes = [IsStaff | IsClient | IsCompany]
-    
+
+
     def get_queryset(self):
         is_staff = getattr(self.request.user, "is_staff", None)
         if is_staff:
             return Company.objects.all()
         return Company.objects.select_related('user').filter(user=self.request.user.id)
- 
+
 
     def create(self, request):
         is_staff = getattr(self.request.user, "is_staff", None)
@@ -234,11 +214,6 @@ class CompanyList(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         return Response({"message": "You don't have permission to create company"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-
-class CompanyDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Company.objects.all()
-    serializer_class = CompanySerializer
-    permission_classes = [IsStaff | IsClient | IsCompany]
 
     def update(self, request, *args, **kwargs):
         is_staff = getattr(self.request.user, "is_staff", None)

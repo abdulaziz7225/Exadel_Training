@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import viewsets
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
@@ -8,15 +8,19 @@ from apps.service.models import Service
 from apps.service.serializers import ServiceSerializer
 
 
-class ServiceList(generics.ListCreateAPIView):
+class ServiceViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
     permission_classes = [IsStaff | IsClient | IsCompany]
 
 
     def get_queryset(self):
-        if getattr(self.request.user, "company", None):
-            company = self.request.user.company
+        if getattr(self.request.user, "companys", None):
+            company = self.request.user.companys
             return Service.objects.filter(company=company.user.id).all()
         return Service.objects.all()
 
@@ -33,12 +37,6 @@ class ServiceList(generics.ListCreateAPIView):
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         return Response({"message": "You don't have permission to create service"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
-class ServiceDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Service.objects.all()
-    serializer_class = ServiceSerializer
-    permission_classes = [IsStaff | IsClient | IsCompany]
 
 
     def update(self, request, *args, **kwargs):

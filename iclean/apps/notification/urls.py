@@ -1,10 +1,14 @@
-from django.urls import path
-from rest_framework.urlpatterns import format_suffix_patterns
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
 from apps.notification import views
 
 
-urlpatterns = format_suffix_patterns([
-    path('', views.NotificationList.as_view(), name='notification-list'),
-    path('<int:pk>/', views.NotificationDetail.as_view(), name='notification-detail'),
-])
+# Create a router and register our viewsets with it.
+# router = DefaultRouter()
+# router.register(r'notifications', views.NotificationViewSet,basename="notifications")
+
+# The API URLs are now determined automatically by the router.
+# urlpatterns = [
+#     path('', include(router.urls)),
+# ]

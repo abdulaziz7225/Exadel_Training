@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import viewsets
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
@@ -8,7 +8,11 @@ from apps.review.models import Review
 from apps.review.serializers import ReviewSerializer
 
 
-class ReviewList(generics.ListCreateAPIView):
+class ReviewViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     permission_classes = [IsStaff | IsClient | IsCompany]
@@ -30,12 +34,6 @@ class ReviewList(generics.ListCreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-
-class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-    permission_classes = [IsStaff | IsClient | IsCompany]
 
 
     def update(self, request, *args, **kwargs):

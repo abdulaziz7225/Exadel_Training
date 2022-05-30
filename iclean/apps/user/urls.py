@@ -1,25 +1,29 @@
-from django.urls import path
-from rest_framework.urlpatterns import format_suffix_patterns
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
 from apps.user import views
-from apps.request import views as request_views
+from apps.notification.views import NotificationViewSet
+from apps.request.views import RequestViewSet, RequestStatusViewSet
+from apps.review.views import ReviewViewSet
+from apps.service.views import ServiceViewSet
 
 
-urlpatterns = format_suffix_patterns([
-     path('', views.api_root),
+# Create a router and register our viewsets with it.
+router = DefaultRouter()
 
-     path('request-statuses/', request_views.RequestStatusList.as_view(), name='requeststatus-list'),
-     path('request-statuses/<int:pk>/', request_views.RequestStatusDetail.as_view(), name='requeststatus-detail'),
+router.register(r'notifications', NotificationViewSet,basename="notification")
+router.register(r'requests', RequestViewSet,basename="request")
+router.register(r'requeststatuses', RequestStatusViewSet,basename="requeststatus")
+router.register(r'reviews', ReviewViewSet, basename="review")
+router.register(r'services', ServiceViewSet,basename="service")
 
-     path('users/', views.UserList.as_view(), name='user-list'),
-     path('users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),
+router.register(r'roles', views.RoleViewSet, basename="role")
+router.register(r'users', views.UserViewSet, basename="user")
+router.register(r'clients', views.ClientViewSet, basename="client")
+router.register(r'companys', views.CompanyViewSet, basename="company")
 
-     path('roles/', views.RoleList.as_view(), name='role-list'),
-     path('roles/<int:pk>/', views.RoleDetail.as_view(), name='role-detail'),
 
-     path('clients/', views.ClientList.as_view(), name='client-list'),
-     path('clients/<int:pk>/', views.ClientDetail.as_view(), name='client-detail'),
-
-     path('companies/', views.CompanyList.as_view(), name='company-list'),
-     path('companies/<int:pk>/', views.CompanyDetail.as_view(), name='company-detail'),
-])
+# The API URLs are now determined automatically by the router.
+urlpatterns = [
+    path('', include(router.urls)),
+]

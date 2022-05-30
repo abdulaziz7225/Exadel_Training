@@ -17,5 +17,3 @@ class Review(models.Model):
         
     def __str__(self):
         return f"{self.client} - ({self.created_at})"
-
-

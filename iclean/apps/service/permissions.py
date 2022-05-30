@@ -38,5 +38,3 @@ class IsCompany(permissions.BasePermission):
         if obj.company.user == request.user:
             return True
         return False
-
-

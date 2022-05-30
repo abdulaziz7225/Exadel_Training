@@ -1,10 +1,14 @@
-from django.urls import path
-from rest_framework.urlpatterns import format_suffix_patterns
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
 from apps.review import views
 
 
-urlpatterns = format_suffix_patterns([
-    path('', views.ReviewList.as_view(), name='review-list', ),
-    path('<int:pk>/', views.ReviewDetail.as_view(), name='review-detail'),
-])
+# Create a router and register our viewsets with it.
+# router = DefaultRouter()
+# router.register(r'reviews', views.ReviewViewSet,basename="reviews")
+
+# The API URLs are now determined automatically by the router.
+# urlpatterns = [
+#     path('', include(router.urls)),
+# ]

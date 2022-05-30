@@ -1,3 +1,4 @@
+from rest_framework import viewsets
 from rest_framework import generics
 from django.db.models import Q
 from rest_framework import status
@@ -10,7 +11,11 @@ from apps.notification.serializers import NotificationSerializer
 from apps.request.models import Request
 
 
-class NotificationList(generics.ListCreateAPIView):
+class NotificationViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+    """
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
     permission_classes = [IsStaff | IsClient | IsCompany]
@@ -41,12 +46,6 @@ class NotificationList(generics.ListCreateAPIView):
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         return Response({"message": "You don't have permission to create notification"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
-class NotificationDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Notification.objects.all()
-    serializer_class = NotificationSerializer
-    permission_classes = [IsStaff | IsClient | IsCompany]
 
 
     def update(self, request, *args, **kwargs):

@@ -36,4 +36,3 @@ class CompanySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Company
         fields = ['url', 'user', 'name', 'services', 'notifications']
-
