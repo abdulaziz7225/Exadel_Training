@@ -1,17 +1,11 @@
 from django.urls import path
-from . import views
+from rest_framework.urlpatterns import format_suffix_patterns
 
-app_name = 'request'
+from apps.request import views
 
 
-urlpatterns = [
-    path('', views.RequestListView.as_view(), name='all'),
-    path('<int:pk>/detail', views.RequestDetailView.as_view(),
-         name='request_detail'),
-    path('create/', views.RequestCreateView.as_view(),
-         name='request_create'),
-    path('<int:pk>/update/',
-         views.RequestUpdateView.as_view(), name='request_update'),
-    path('<int:pk>/delete/',
-         views.RequestDeleteView.as_view(), name='request_delete'),
-]
+urlpatterns = format_suffix_patterns([
+     path('', views.RequestList.as_view(), name='request-list'),
+     path('<int:pk>/', views.RequestDetail.as_view(), name='request-detail'),
+])
+

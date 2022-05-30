@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Request, Request_status
+from .models import Request, RequestStatus
 # Register your models here.
 
 admin.site.register(Request)
-admin.site.register(Request_status)
+admin.site.register(RequestStatus)

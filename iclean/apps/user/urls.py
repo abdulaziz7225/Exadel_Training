@@ -1,16 +1,25 @@
 from django.urls import path
-from . import views
+from rest_framework.urlpatterns import format_suffix_patterns
 
-app_name = 'user'
+from apps.user import views
+from apps.request import views as request_views
 
 
-urlpatterns = [
-    path('', views.UserListView.as_view(), name='all'),
-    path('user/<int:pk>/detail', views.UserDetailView.as_view(), name='user_detail'),
-    path('user/create/', views.UserCreateView.as_view(), name='user_create'),
-    path('user/<int:pk>/update/',
-         views.UserUpdateView.as_view(), name='user_update'),
-    path('user/<int:pk>/delete/',
-         views.UserDeleteView.as_view(), name='user_delete'),
+urlpatterns = format_suffix_patterns([
+     path('', views.api_root),
 
-]
+     path('request-statuses/', request_views.RequestStatusList.as_view(), name='requeststatus-list'),
+     path('request-statuses/<int:pk>/', request_views.RequestStatusDetail.as_view(), name='requeststatus-detail'),
+
+     path('users/', views.UserList.as_view(), name='user-list'),
+     path('users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),
+
+     path('roles/', views.RoleList.as_view(), name='role-list'),
+     path('roles/<int:pk>/', views.RoleDetail.as_view(), name='role-detail'),
+
+     path('clients/', views.ClientList.as_view(), name='client-list'),
+     path('clients/<int:pk>/', views.ClientDetail.as_view(), name='client-detail'),
+
+     path('companies/', views.CompanyList.as_view(), name='company-list'),
+     path('companies/<int:pk>/', views.CompanyDetail.as_view(), name='company-detail'),
+])
