@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'django_extensions',
     'drf_yasg',
+    'django_celery_results',
 
     # installed apps
     'apps.notification',
@@ -195,3 +196,12 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+# Celery Configuration Options
+CELERY_BROKER_URL = "amqp://guest:guest@localhost/"
+CELERY_TASK_SERIALIZER = "json"
+CELERY_TIMEZONE = "Asia/Tashkent"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
