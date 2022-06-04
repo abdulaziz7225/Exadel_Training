@@ -11,19 +11,23 @@ Command Reference
     celery -A NAMEOFINSTANCE worker --loglevel=info
 
     celery -A iclean worker --loglevel=info
+    # OR
+    celery -A iclean worker -l info 
 
     [Windows OS]
     celery -A iclean worker -l info --pool=solo
-
+    # OR
+    pip install gevent
+    celery -A iclean worker -l info -P gevent 
 # Run RabbitMQ (On Windows)
 
 Run:
-C:\Program Files\RabbitMQ Server\rabbitmq_server-3.8.6\sbin\rabbitmq-server.bat
+C:\Program Files\"RabbitMQ Server"\rabbitmq_server-3.10.4\sbin\rabbitmq-server.bat
 
 #Run First Task
     py manage.py shell
-    from .requests.tasks import mul
-    mul.delay(2, 2)
+    from .requests.tasks import add
+    add.delay(2, 2)
 
     or
 
@@ -41,7 +45,7 @@ Working with Flower
 
 Windows Work Around
 #####
-C:\App_Caches\JetBrains\PyCharm Projects\Exadel_Training>env\lib\site-packages\tornado\platform\asyncio.py
+C:\App_Caches\JetBrains\'PyCharm Projects'\Exadel_Training>env\lib\site-packages\tornado\platform\asyncio.py
 
 import sys
 
