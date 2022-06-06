@@ -27,20 +27,3 @@ def test_service_instance(
     item = Service.objects.count()
     print(item)
     assert item == validity
-
-
-# @pytest.mark.django_db
-# class TestServiceEndpoints:
-
-#     endpoint = '/services/'
-
-#     def test_list(self, api_client):
-
-#         baker.make(Service, _quantity=3)
-
-#         response = api_client().get(
-#             self.endpoint
-#         )
-
-#         assert response.status_code == 200
-#         assert len(json.loads(response.content)) == 3
