@@ -1,7 +1,7 @@
 import pytest
 
 from pytest_factoryboy import register
-from factories import ServiceFactory
+from tests.test_service.factories import ServiceFactory
 
 
 register(ServiceFactory)

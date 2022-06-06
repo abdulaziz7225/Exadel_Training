@@ -1,7 +1,7 @@
 import pytest
 
 from pytest_factoryboy import register
-from factories import ReviewFactory
+from tests.test_review.factories import ReviewFactory
 
 
 register(ReviewFactory)

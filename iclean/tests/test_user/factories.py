@@ -4,7 +4,6 @@ from faker import Faker
 fake = Faker()
 
 from apps.user.models import Role, User, Client, Company
-from tests.test_user.factories import CompanyFactory
 
 
 class RoleFactory(factory.django.DjangoModelFactory):

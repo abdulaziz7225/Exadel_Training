@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.text import slugify
 
 from apps.user.models import Client, Company
 
@@ -18,3 +19,7 @@ class Review(models.Model):
         
     def __str__(self):
         return f"{self.client} - ({self.created_at})"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.comment)
+        super(Review, self).save(*args, **kwargs)

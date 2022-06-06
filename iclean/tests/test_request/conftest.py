@@ -1,7 +1,7 @@
 import pytest
 
 from pytest_factoryboy import register
-from factories import RequestStatusFactory, RequestFactory
+from tests.test_request.factories import RequestStatusFactory, RequestFactory
 
 
 register(RequestStatusFactory)

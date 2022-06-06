@@ -1,7 +1,7 @@
 import pytest
 
 from pytest_factoryboy import register
-from factories import RoleFactory, UserFactory, ClientFactory, CompanyFactory
+from tests.test_user.factories import RoleFactory, UserFactory, ClientFactory, CompanyFactory
 
 
 register(RoleFactory)

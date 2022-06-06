@@ -1,7 +1,7 @@
 import pytest
 
 from pytest_factoryboy import register
-from factories import NotificationFactory
+from tests.test_notification.factories import NotificationFactory
 
 
 register(NotificationFactory)

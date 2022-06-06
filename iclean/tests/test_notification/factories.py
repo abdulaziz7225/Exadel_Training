@@ -15,7 +15,10 @@ class NotificationFactory(factory.django.DjangoModelFactory):
     name = fake.text(max_nb_chars=20)
     details = fake.text(max_nb_chars=100)
     viewed_by_company = fake.random_element(
-    elements=OrderedDict([True, False]))
+    elements=OrderedDict([
+        (True, 0.5),
+        (False, 0.5), 
+    ]))
     created_at = fake.date_time_this_century()
     request = factory.SubFactory(RequestFactory)
     company = factory.SubFactory(CompanyFactory)

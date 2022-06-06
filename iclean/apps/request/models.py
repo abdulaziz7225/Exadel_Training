@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.utils.text import slugify
 
 from apps.user.models import Client, Company
 from apps.service.models import Service
@@ -32,3 +33,7 @@ class Request(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Request, self).save(*args, **kwargs)
