@@ -9,4 +9,4 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
     requests = serializers.HyperlinkedRelatedField(many=True, view_name='request-detail', read_only=True)
     class Meta:
         model = Service
-        fields = ['url', 'id', 'name', 'type_of_service', 'cost_of_service', 'created_at', 'company', 'requests']
+        fields = ['url', 'id', 'name', 'type_of_service', 'cost_of_service', 'created_at', 'company', 'slug', 'requests']

@@ -10,4 +10,4 @@ class NotificationSerializer(serializers.HyperlinkedModelSerializer):
     company = serializers.SlugRelatedField(slug_field='name', queryset=Company.objects.all())
     class Meta:
         model = Notification
-        fields = ['url', 'id', 'name', 'details', 'viewed_by_company', 'created_at', 'request', 'company']
+        fields = ['url', 'id', 'name', 'details', 'viewed_by_company', 'created_at', 'request', 'company', 'slug']

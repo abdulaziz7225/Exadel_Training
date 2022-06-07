@@ -20,4 +20,4 @@ class RequestSerializer(serializers.HyperlinkedModelSerializer):
     notifications = serializers.HyperlinkedRelatedField(many=True, view_name='notification-detail', read_only=True)
     class Meta:
         model = Request
-        fields = ['url', 'id', 'name', 'total_area', 'created_at', 'client', 'company', 'status', 'service', 'notifications']
+        fields = ['url', 'id', 'name', 'total_area', 'created_at', 'client', 'company', 'status', 'service', 'slug', 'notifications']

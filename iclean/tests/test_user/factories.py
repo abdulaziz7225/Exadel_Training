@@ -20,7 +20,7 @@ class RoleFactory(factory.django.DjangoModelFactory):
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
-    email = fake.ascii_email() 
+    email = fake.unique.ascii_email() 
     role = factory.SubFactory(RoleFactory)
     phone = fake.phone_number() 
     country = fake.country() 
