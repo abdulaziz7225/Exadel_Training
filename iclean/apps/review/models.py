@@ -5,7 +5,6 @@ from django.utils.text import slugify
 from apps.user.models import Client, Company
 
 
-# Create your models here.
 class Review(models.Model):
     comment = models.TextField()
     rating = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])

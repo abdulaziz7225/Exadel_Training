@@ -5,7 +5,6 @@ from django.utils.text import slugify
 from apps.user.models import Company
 
 
-# Create your models here.
 class Service(models.Model):
     name = models.CharField(max_length=100)
     type_of_service = models.CharField(max_length=255)

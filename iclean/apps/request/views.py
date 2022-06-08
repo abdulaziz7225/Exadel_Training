@@ -9,7 +9,6 @@ from apps.request.models import Request, RequestStatus
 from apps.request.serializers import RequestSerializer, RequestStatusSerializer
 
 
-# Request_status model
 class RequestStatusViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides 'list', 'create', 'retrieve',

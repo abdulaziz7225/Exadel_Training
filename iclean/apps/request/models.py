@@ -6,7 +6,6 @@ from apps.user.models import Client, Company
 from apps.service.models import Service
 
 
-# Create your models here.
 class RequestStatus(models.Model):
     name = models.CharField(max_length=255)
 

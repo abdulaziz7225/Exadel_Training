@@ -5,7 +5,6 @@ from apps.request.models import Request
 from apps.user.models import Company
 
 
-# Create your models here.
 class Notification(models.Model):
     name = models.CharField(max_length=100)
     details = models.TextField()
