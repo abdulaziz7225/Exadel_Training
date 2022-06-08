@@ -9,4 +9,4 @@ class ReviewSerializer(serializers.HyperlinkedModelSerializer):
     company = serializers.SlugRelatedField(slug_field='name', queryset=Company.objects.all())
     class Meta:
         model = Review
-        fields = ['url', 'id', 'comment', 'rating', 'created_at', 'client', 'company' 'slug']
+        fields = ['url', 'id', 'comment', 'rating', 'created_at', 'client', 'company', 'slug']
