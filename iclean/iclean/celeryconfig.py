@@ -12,7 +12,7 @@ cache_backend = 'django-cache'
 beat_scheduler = "django_celery_beat.schedulers:DatabaseScheduler"
 beat_schedule = {
     "scheduled_task": {
-        "task": "apps.request.tasks.say_hello",
+        "task": "apps.request.tasks.say_count",
         "schedule": 10.0,
     }
 }
