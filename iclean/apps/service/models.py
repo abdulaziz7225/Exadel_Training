@@ -1,10 +1,10 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.utils.text import slugify
 
 from apps.user.models import Company
 
 
-# Create your models here.
 class Service(models.Model):
     name = models.CharField(max_length=100)
     type_of_service = models.CharField(max_length=255)
@@ -18,3 +18,7 @@ class Service(models.Model):
         
     def __str__(self):
         return f"{self.name}"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Service, self).save(*args, **kwargs)
