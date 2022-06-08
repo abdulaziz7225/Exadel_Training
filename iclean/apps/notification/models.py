@@ -1,10 +1,10 @@
 from django.db import models
+from django.utils.text import slugify
 
 from apps.request.models import Request
 from apps.user.models import Company
 
 
-# Create your models here.
 class Notification(models.Model):
     name = models.CharField(max_length=100)
     details = models.TextField()
@@ -19,3 +19,7 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Notification, self).save(*args, **kwargs)
