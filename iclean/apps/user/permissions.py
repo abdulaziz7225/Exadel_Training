@@ -4,63 +4,43 @@ from rest_framework import permissions
 class IsStaff(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        if request.user.is_staff:
-            return True
-        return False
+        return request.user.is_staff
 
     def has_object_permission(self, request, view, obj):
-        if request.user.is_staff:
-            return True
-        return False
+        return request.user.is_staff
 
 
 class IsClientUser(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        if request.user.is_authenticated:
-            return True
-        return False
+        return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        if obj.email == request.user.email:
-            return True
-        return False
+        return obj.email == request.user.email
 
 
 class IsCompanyUser(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        if request.user.is_authenticated:
-            return True
-        return False
+        return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        if obj.email == request.user.email:
-            return True
-        return False
+        return obj.email == request.user.email
 
 
 class IsClient(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        if request.user.is_authenticated and request.user.role.role == 'client':
-            return True
-        return False
+        return request.user.is_authenticated and request.user.role.role == 'client'
 
     def has_object_permission(self, request, view, obj):
-        if obj.user == request.user and obj.user.role.role == 'client':
-            return True
-        return False
+        return obj.user == request.user and obj.user.role.role == 'client'
 
 
 class IsCompany(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        if request.user.is_authenticated and request.user.role.role == 'company':
-            return True
-        return False
+        return request.user.is_authenticated and request.user.role.role == 'company'
 
     def has_object_permission(self, request, view, obj):
-        if obj.user.id == request.user.id and obj.user.role.role == 'company':
-            return True
-        return False
+        return obj.user.id == request.user.id and obj.user.role.role == 'company'

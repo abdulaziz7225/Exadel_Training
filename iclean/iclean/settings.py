@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'django_extensions',
     'drf_yasg',
+    'django_celery_results',
+    'django_celery_beat',
 
     # installed apps
     'apps.notification',
