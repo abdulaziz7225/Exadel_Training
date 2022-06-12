@@ -10,12 +10,25 @@ class RoleSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'id', 'role', 'users']
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class SimpleRoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ['url', 'id', 'role']
+
+
+class UserSerializer(serializers.ModelSerializer):
     role = serializers.SlugRelatedField(slug_field='role', queryset=Role.objects.all())
     class Meta:
         model = User
         fields = ['url', 'id', 'email', 'role', 'phone', 'country', 'city', 
                         'is_staff', 'is_active']
+
+
+class SimpleUserSerializer(serializers.ModelSerializer):
+    role = serializers.SlugRelatedField(slug_field='role', queryset=Role.objects.all())
+    class Meta:
+        model = User
+        fields = ['url', 'id', 'email', 'role', 'phone']
 
 
 class ClientSerializer(serializers.HyperlinkedModelSerializer):

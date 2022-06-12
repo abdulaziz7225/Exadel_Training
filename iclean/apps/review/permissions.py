@@ -4,25 +4,25 @@ from rest_framework import permissions
 class IsStaff(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return request.user.is_staff
+        return bool(request.user.is_authenticated and request.user.is_staff)
 
     def has_object_permission(self, request, view, obj):
-        return request.user.is_staff
+        return bool(request.user.is_authenticated and request.user.is_staff)
 
 
 class IsClient(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return request.user.is_authenticated
+        return bool(request.user.is_authenticated and request.user.role.role == "client")
 
     def has_object_permission(self, request, view, obj):
-        return obj.client.user == request.user
+        return bool(request.user.is_authenticated and request.user.role.role == "client" and request.user == obj.client.user)
 
 
 class IsCompany(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return request.user.is_authenticated
+        return bool(request.user.is_authenticated and request.user.role.role == "company" and request.method in permissions.SAFE_METHODS)
 
     def has_object_permission(self, request, view, obj):
-        return obj.company.user == request.user and request.method in permissions.SAFE_METHODS
+        return bool(request.user.is_authenticated and request.user.role.role == "company" and request.user == obj.company.user and request.method in permissions.SAFE_METHODS)

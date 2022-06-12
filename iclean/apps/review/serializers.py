@@ -10,3 +10,9 @@ class ReviewSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Review
         fields = ['url', 'id', 'comment', 'rating', 'created_at', 'client', 'company', 'slug']
+
+
+class SimpleReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['url', 'id', 'comment', 'rating']

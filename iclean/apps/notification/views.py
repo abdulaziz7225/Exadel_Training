@@ -3,12 +3,13 @@ from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 
 from apps.notification.filters import NotificationFilter
 from apps.notification.models import Notification
 from apps.notification.permissions import IsStaff, IsClient, IsCompany
-from apps.notification.serializers import NotificationSerializer
+from apps.notification.serializers import NotificationSerializer, SimpleNotificationSerializer
 from apps.request.models import Request
 
 
@@ -17,11 +18,14 @@ class NotificationViewSet(viewsets.ModelViewSet):
     This viewset automatically provides 'list', 'create', 'retrieve',
     'update' and 'destroy' actions.
     """
-    queryset = Notification.objects.all()
-    serializer_class = NotificationSerializer
+    queryset = Notification.objects.select_related('request', 'company').all()
+    serializer_class = SimpleNotificationSerializer
     # permission_classes = [IsStaff | IsClient | IsCompany]
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = NotificationFilter
+    search_fields = ['name', 'details']
+    ordering_fields = ['created_at']
+
 
     # def get_queryset(self):
     #     is_staff = getattr(self.request.user, "is_staff", None)

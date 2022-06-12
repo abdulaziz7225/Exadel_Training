@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +31,19 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+THIRD_PARTY_LIBRARIES = [
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'djoser',
+    "debug_toolbar",
+    'django_extensions',
+    'drf_yasg',
+    'django_celery_results',
+    'django_celery_beat',
+    'django_filters',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,23 +52,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # third party libraries
-    'rest_framework',
-    'rest_framework_simplejwt',
-    "debug_toolbar",
-    'django_extensions',
-    'drf_yasg',
-    'django_celery_results',
-    'django_celery_beat',
-    'django_filters',
-
     # installed apps
     'apps.notification',
     'apps.request',
     'apps.review',
     'apps.service',
     'apps.user',
-]
+] + THIRD_PARTY_LIBRARIES
 
 MIDDLEWARE = [
     # django-debug-toolbar middleware
@@ -157,10 +161,38 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.IsAuthenticated',
     # ],
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [
-    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
-    # ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'COERCE_DECIMAL_TO_STRING': False,
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+   'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+DJOSER = {
+    'SERIALIZERS': {
+        # 'activation': 'djoser.serializers.ActivationSerializer',
+        # 'password_reset': 'djoser.serializers.SendEmailResetSerializer',
+        # 'password_reset_confirm': 'djoser.serializers.PasswordResetConfirmSerializer',
+        # 'password_reset_confirm_retype': 'djoser.serializers.PasswordResetConfirmRetypeSerializer',
+        # 'set_password': 'djoser.serializers.SetPasswordSerializer',
+        # 'set_password_retype': 'djoser.serializers.SetPasswordRetypeSerializer',
+        # 'set_username': 'djoser.serializers.SetUsernameSerializer',
+        # 'set_username_retype': 'djoser.serializers.SetUsernameRetypeSerializer',
+        # 'username_reset': 'djoser.serializers.SendEmailResetSerializer',
+        # 'username_reset_confirm': 'djoser.serializers.UsernameResetConfirmSerializer',
+        # 'username_reset_confirm_retype': 'djoser.serializers.UsernameResetConfirmRetypeSerializer',
+ 
+        'user_create': 'apps.user.serializers_djoser.UserCreateSerializer',
+
+        'user_create_password_retype': 'djoser.serializers.UserCreatePasswordRetypeSerializer',
+        'user_delete': 'djoser.serializers.UserDeleteSerializer',
+        'user': 'djoser.serializers.UserSerializer',
+        'current_user': 'apps.user.serializers_djoser.UserSerializer',
+    },
 }

@@ -11,6 +11,13 @@ class RequestStatusSerializer(serializers.HyperlinkedModelSerializer):
         model = RequestStatus
         fields = ['url', 'id', 'name', 'requests']
 
+
+class SimpleRequestStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RequestStatus
+        fields = ['url', 'name']
+
+
 class RequestSerializer(serializers.HyperlinkedModelSerializer):
     client = serializers.SlugRelatedField(slug_field='first_name', queryset=Client.objects.all())
     company = serializers.SlugRelatedField(slug_field='name', queryset=Company.objects.all())
@@ -20,3 +27,15 @@ class RequestSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Request
         fields = ['url', 'id', 'name', 'total_area', 'created_at', 'client', 'company', 'status', 'service', 'slug', 'notifications']
+
+
+class SimpleRequestSerializer(serializers.ModelSerializer):
+    service = serializers.SlugRelatedField(slug_field='name', queryset=Service.objects.all())
+    total_price = serializers.SerializerMethodField()
+    
+    def get_total_price(self, request_item:Request):
+        return request_item.total_area * request_item.service.cost_of_service
+
+    class Meta:
+        model = Request
+        fields = ['url', 'id', 'name', 'total_area', 'total_price', 'service']

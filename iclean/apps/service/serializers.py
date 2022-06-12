@@ -10,3 +10,10 @@ class ServiceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Service
         fields = ['url', 'id', 'name', 'type_of_service', 'cost_of_service', 'created_at', 'company', 'slug', 'requests']
+
+
+class SimpleServiceSerializer(serializers.ModelSerializer):
+    company = serializers.SlugRelatedField(slug_field='name', read_only=True)
+    class Meta:
+        model = Service
+        fields = ['url', 'id', 'name', 'type_of_service', 'cost_of_service', 'company']
