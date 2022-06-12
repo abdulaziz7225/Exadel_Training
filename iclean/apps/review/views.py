@@ -6,7 +6,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from apps.review.filters import ReviewFilter
 from apps.review.models import Review
 from apps.review.permissions import IsStaff, IsClient, IsCompany 
-from apps.review.serializers import ReviewSerializer, SimpleReviewSerializer
+from apps.review.serializers import ReadReviewSerializer, AdminCreateReviewSerializer, ClientCreateReviewSerializer
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -15,7 +15,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     'update' and 'destroy' actions.
     """
     # queryset = Review.objects.select_related('client', 'company').all()
-    serializer_class = ReviewSerializer
+    serializer_class = ReadReviewSerializer
     permission_classes = [IsStaff | IsClient | IsCompany]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ReviewFilter
@@ -28,3 +28,16 @@ class ReviewViewSet(viewsets.ModelViewSet):
         if not is_staff:
             queryset = queryset.filter(Q(client=self.request.user.id) | Q(company=self.request.user.id))
         return queryset
+    
+
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            if self.request.user.is_staff:
+                return AdminCreateReviewSerializer
+            return ClientCreateReviewSerializer
+        return ReadReviewSerializer
+    
+
+    def perform_create(self, serializer):
+        if not self.request.user.is_staff:
+            serializer.save(client=self.request.user.clients)

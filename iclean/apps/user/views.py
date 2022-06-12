@@ -5,8 +5,8 @@ from rest_framework.decorators import action
 from apps.user.filters import UserFilter
 from apps.user.models import Role, User, Client, Company
 from apps.user.permissions import IsStaffOrReadOnly, IsStaff, IsNotStaff, IsClient, IsCompany 
-from apps.user.serializers import RoleSerializer, UserSerializer, ClientSerializer, CompanySerializer
-from apps.user.serializers import SimpleRoleSerializer, SimpleUserSerializer
+from apps.user.serializers import AdminRoleSerializer, NonAdminRoleSerializer, ReadUserSerializer, AdminCreateUserSerializer, \
+            NonAdminCreateUserSerializer, ReadClientSerializer, CreateClientSerializer, ReadCompanySerializer, CreateCompanySerializer
 
 
 # Role model
@@ -16,8 +16,13 @@ class RoleViewSet(viewsets.ModelViewSet):
     'update' and 'destroy' actions.
     """
     queryset = Role.objects.all()
-    serializer_class = SimpleRoleSerializer
+    # serializer_class = NonAdminRoleSerializer
     permission_classes = [IsStaffOrReadOnly]
+
+    def get_serializer_class(self):
+        if self.request.user.is_staff:
+            return AdminRoleSerializer
+        return NonAdminRoleSerializer
 
 
 # User model 
@@ -27,7 +32,7 @@ class UserViewSet(viewsets.ModelViewSet):
     'update' and 'destroy' actions.
     """
     queryset = User.objects.select_related('role').all()
-    serializer_class = SimpleUserSerializer
+    serializer_class = ReadUserSerializer
     permission_classes = [IsStaff | IsNotStaff]
     filter_backends = [DjangoFilterBackend]
     filterset_class = UserFilter
@@ -55,6 +60,23 @@ class UserViewSet(viewsets.ModelViewSet):
         return queryset
 
 
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            if self.request.user.is_staff or self.request.user.is_anonymous:
+                return AdminCreateUserSerializer
+            return NonAdminCreateUserSerializer
+        return ReadUserSerializer
+    
+
+    # def perform_create(self, serializer):
+    #     serializer.save(client=self.request.user.clients)
+
+    # def perform_create(self, serializer):
+    #     if self.request.user.role.role == 'client':
+    #         serializer.save(sender=self.request.user)
+    #     elif self.request.user.role.role == 'company':
+    #         serializer.save(sender=self.request.user, company=self.request.user.companys)
+
 # Client model
 class ClientViewSet(viewsets.ModelViewSet):
     """
@@ -62,7 +84,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     'update' and 'destroy' actions.
     """
     queryset = Client.objects.select_related('user').all()
-    serializer_class = ClientSerializer
+    # serializer_class = ReadClientSerializer
     permission_classes = [IsStaff | IsClient]
 
     # @action(detail=False)
@@ -77,6 +99,12 @@ class ClientViewSet(viewsets.ModelViewSet):
         return queryset
 
 
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            return CreateClientSerializer
+        return ReadClientSerializer
+
+
 # Company model 
 class CompanyViewSet(viewsets.ModelViewSet):
     """
@@ -84,7 +112,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
     'update' and 'destroy' actions.
     """
     queryset = Company.objects.select_related('user').all()
-    serializer_class = CompanySerializer
+    # serializer_class = ReadCompanySerializer
     permission_classes = [IsStaff | IsCompany]
 
     def get_queryset(self):
@@ -93,3 +121,8 @@ class CompanyViewSet(viewsets.ModelViewSet):
         if not is_staff:
             queryset = queryset.filter(user=self.request.user.id)
         return queryset
+
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            return CreateCompanySerializer
+        return ReadCompanySerializer

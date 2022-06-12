@@ -9,7 +9,7 @@ class RequestFilter(FilterSet):
         fields = {
             'name': ['icontains'],
             'client': ['exact'],
-            'company': ['exact'],
+            # 'company': ['exact'],
             'service': ['exact'],
             'status': ['exact'],
         }

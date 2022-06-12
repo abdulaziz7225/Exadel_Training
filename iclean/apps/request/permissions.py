@@ -37,4 +37,6 @@ class IsCompany(permissions.BasePermission):
         return bool(request.user.is_authenticated and request.user.role.role == "company" and request.method is not CREATE_METHOD)
 
     def has_object_permission(self, request, view, obj):
-        return bool(request.user.is_authenticated and request.user.role.role == "company" and request.user == obj.company.user and request.method is not DELETE_METHOD)
+
+        return bool(request.user.is_authenticated and request.user.role.role == "company" and \
+            request.user.id == obj.service.company.user.id and request.method is not DELETE_METHOD)

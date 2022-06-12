@@ -9,7 +9,7 @@ class NotificationFilter(FilterSet):
         model = Notification
         fields = {
             'name': ['icontains'],
-            'viewed_by_company': ['exact'],
+            # 'viewed_by_company': ['exact'],
             'request': ['exact'],
             'company': ['exact'],
         }
