@@ -46,3 +46,14 @@ class IsCompany(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return bool(request.user.is_authenticated and request.user.role.role == 'company' and request.user.id == obj.user.id)
+
+
+class IsOwner(permissions.BasePermission):
+    """
+    Custom permission to only allow owners of an object to edit it.
+    """
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticated)
+
+    def has_object_permission(self, request, view, obj):
+        return bool(request.user.is_authenticated and obj.user == request.user)

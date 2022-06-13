@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from apps.auth.permissions import IsOwner
-from apps.auth.serializers import RegisterSerializer, ChangePasswordSerializer, UpdateUserSerializer
+from apps.user.permissions import IsOwner
+from apps.user.serializers.register import RegisterSerializer, ChangePasswordSerializer
 from apps.user.models import User
 
 
@@ -21,13 +21,6 @@ class ChangePasswordView(generics.UpdateAPIView):
     queryset = User.objects.all()
     permission_classes = [IsOwner]
     serializer_class = ChangePasswordSerializer
-
-
-class UpdateProfileView(generics.UpdateAPIView):
-
-    queryset = User.objects.all()
-    permission_classes = [IsOwner]
-    serializer_class = UpdateUserSerializer
 
 
 class LogoutView(APIView):

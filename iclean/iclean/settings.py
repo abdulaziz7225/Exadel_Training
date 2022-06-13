@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     # installed apps
-    'apps.auth',
     'apps.notification',
     'apps.request',
     'apps.review',

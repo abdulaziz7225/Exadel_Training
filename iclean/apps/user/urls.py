@@ -11,7 +11,7 @@ from apps.request.urls import router as request_router
 from apps.review.urls import router as review_router
 from apps.service.urls import router as service_router
 from apps.user.views import role, user, client, company
-from apps.user.register.views import RegisterView, ChangePasswordView, UpdateProfileView, LogoutView, LogoutAllView
+from apps.user.views.register import RegisterView, ChangePasswordView, LogoutView, LogoutAllView
 
 
 router = DefaultRouter()
@@ -32,9 +32,9 @@ urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('login/verify/', TokenVerifyView.as_view(), name='token_verify'),
+
     path('register/', RegisterView.as_view(), name='auth_register'),
-    path('change-password/<int:pk>/', ChangePasswordView.as_view(), name='auth_change_password'),
-    path('update-profile/<int:pk>/', UpdateProfileView.as_view(), name='auth_update_profile'),
+    path('users/<int:pk>/change-password/', ChangePasswordView.as_view(), name='auth_change_password'),
     path('logout/', LogoutView.as_view(), name='auth_logout'),
     path('logout-all/', LogoutAllView.as_view(), name='auth_logout_all'),
 ]
