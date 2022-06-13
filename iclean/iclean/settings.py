@@ -35,7 +35,6 @@ THIRD_PARTY_LIBRARIES = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
-    'djoser',
     "debug_toolbar",
     'django_extensions',
     'drf_yasg',
@@ -53,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     # installed apps
+    'apps.auth',
     'apps.notification',
     'apps.request',
     'apps.review',
@@ -158,41 +158,18 @@ AUTH_USER_MODEL = 'user.User'
 
 # installed settings
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
+    # ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'COERCE_DECIMAL_TO_STRING': False,
 }
 
-SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('JWT',),
-   'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-}
-
-DJOSER = {
-    'SERIALIZERS': {
-        # 'activation': 'djoser.serializers.ActivationSerializer',
-        # 'password_reset': 'djoser.serializers.SendEmailResetSerializer',
-        # 'password_reset_confirm': 'djoser.serializers.PasswordResetConfirmSerializer',
-        # 'password_reset_confirm_retype': 'djoser.serializers.PasswordResetConfirmRetypeSerializer',
-        # 'set_password': 'djoser.serializers.SetPasswordSerializer',
-        # 'set_password_retype': 'djoser.serializers.SetPasswordRetypeSerializer',
-        # 'set_username': 'djoser.serializers.SetUsernameSerializer',
-        # 'set_username_retype': 'djoser.serializers.SetUsernameRetypeSerializer',
-        # 'username_reset': 'djoser.serializers.SendEmailResetSerializer',
-        # 'username_reset_confirm': 'djoser.serializers.UsernameResetConfirmSerializer',
-        # 'username_reset_confirm_retype': 'djoser.serializers.UsernameResetConfirmRetypeSerializer',
- 
-        'user_create': 'apps.user.serializers_djoser.UserCreateSerializer',
-
-        'user_create_password_retype': 'djoser.serializers.UserCreatePasswordRetypeSerializer',
-        'user_delete': 'djoser.serializers.UserDeleteSerializer',
-        'user': 'apps.user.serializers_djoser.UserSerializer',
-        'current_user': 'djoser.serializers.UserSerializer',
-    },
-}
+# SIMPLE_JWT = {
+#    'AUTH_HEADER_TYPES': ('JWT',),
+#    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+# }
