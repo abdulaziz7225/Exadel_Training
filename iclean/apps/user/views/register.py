@@ -6,16 +6,16 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from apps.user.permissions import IsOwner
-from apps.user.serializers.register import RegisterSerializer, ChangePasswordSerializer
-from apps.user.models import User
+from apps.user.serializers.register import RegisterUserSerializer, ChangePasswordSerializer
+from apps.user.models import User, Client, Company
 
 
-class RegisterView(generics.CreateAPIView):
+class RegisterUserView(generics.CreateAPIView):
     
     queryset = User.objects.all()
     permission_classes = [AllowAny]
-    serializer_class = RegisterSerializer
-   
+    serializer_class = RegisterUserSerializer
+
 
 class ChangePasswordView(generics.UpdateAPIView):
 
@@ -25,7 +25,8 @@ class ChangePasswordView(generics.UpdateAPIView):
 
 
 class LogoutView(APIView):
-    permission_classes = (IsAuthenticated,)
+    
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         try:
@@ -39,7 +40,8 @@ class LogoutView(APIView):
 
         
 class LogoutAllView(APIView):
-    permission_classes = (IsAuthenticated,)
+    
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         tokens = OutstandingToken.objects.filter(user_id=request.user.id)

@@ -21,9 +21,6 @@ class UserViewSet(viewsets.ModelViewSet):
     ordering_fields = ['id']
 
 
-    # def get_serializer_context(self):
-    #     return super().get_serializer_context()
-
     def get_queryset(self):
         queryset = User.objects.select_related('role').all()
         is_staff = getattr(self.request.user, "is_staff", None)

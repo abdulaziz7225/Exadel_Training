@@ -14,7 +14,7 @@ class ReadClientSerializer(serializers.HyperlinkedModelSerializer):
         'apartment', 'requests', 'reviews']
 
 
-class UpdateClientSerializer(serializers.ModelSerializer):
+class CreateUpdateClientSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(slug_field='id', read_only=True)
     class Meta:
         model = Client
@@ -32,10 +32,3 @@ class AdminCreateClientSerializer(serializers.ModelSerializer):
         if Client.objects.filter(user_id__email=value).exists():
             raise serializers.ValidationError({"email": "This email is already in use."})
         return value
-
-
-class NonAdminCreateClientSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(slug_field='id', read_only=True)
-    class Meta:
-        model = Client
-        fields = ['url', 'user', 'first_name', 'last_name', 'street', 'house_number', 'apartment']

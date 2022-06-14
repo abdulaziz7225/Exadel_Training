@@ -1,8 +1,8 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, serializers
 
 from apps.user.models import Company
 from apps.user.permissions import IsStaff, IsCompany 
-from apps.user.serializers.company import ReadCompanySerializer, UpdateCompanySerializer, AdminCreateCompanySerializer, NonAdminCreateCompanySerializer
+from apps.user.serializers.company import ReadCompanySerializer, CreateUpdateCompanySerializer, AdminCreateCompanySerializer
 
 
 # Company model 
@@ -23,16 +23,16 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 
     def get_serializer_class(self):
-        if self.action in ["update", "partial_update"]:
-            return UpdateCompanySerializer
-        elif self.action in ["create", "destroy"]:
-            if self.request.user.is_staff:
-                return AdminCreateCompanySerializer
-            return NonAdminCreateCompanySerializer
+        if self.request.user.is_staff:
+            return AdminCreateCompanySerializer
+        elif self.action in ["create", "update", "partial_update", "destroy"]:
+            return CreateUpdateCompanySerializer
         return ReadCompanySerializer
 
 
     def perform_create(self, serializer):
         if not self.request.user.is_staff:
+            if Company.objects.filter(user=self.request.user).exists():
+                raise serializers.ValidationError({"email": "This email is already in use."})
             serializer.save(user=self.request.user)
         serializer.save()

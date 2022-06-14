@@ -13,7 +13,7 @@ class ReadCompanySerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'user', 'name', 'services', 'notifications']
 
 
-class UpdateCompanySerializer(serializers.ModelSerializer):
+class CreateUpdateCompanySerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(slug_field='id', read_only=True)
     class Meta:
         model = Company
@@ -31,10 +31,3 @@ class AdminCreateCompanySerializer(serializers.ModelSerializer):
         if Company.objects.filter(user_id__email=value).exists():
             raise serializers.ValidationError({"email": "This email is already in use."})
         return value
-
-
-class NonAdminCreateCompanySerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(slug_field='id', read_only=True)
-    class Meta:
-        model = Company
-        fields = ['url', 'user', 'name' ]

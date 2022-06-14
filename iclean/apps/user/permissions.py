@@ -1,8 +1,6 @@
 from rest_framework import permissions
 
 
-CREATE_METHOD = 'POST'
-
 class IsStaffOrReadOnly(permissions.BasePermission):
 
     def has_permission(self, request, view):
@@ -33,7 +31,7 @@ class IsNotStaff(permissions.BasePermission):
 class IsClient(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return bool(request.user.is_authenticated and request.user.role.role == 'client' and request.method is not CREATE_METHOD)
+        return bool(request.user.is_authenticated and request.user.role.role == 'client')
 
     def has_object_permission(self, request, view, obj):
         return bool(request.user.is_authenticated and request.user.role.role == 'client' and request.user.id == obj.user.id)
@@ -42,18 +40,16 @@ class IsClient(permissions.BasePermission):
 class IsCompany(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return bool(request.user.is_authenticated and request.user.role.role == 'company' and request.method is not CREATE_METHOD)
+        return bool(request.user.is_authenticated and request.user.role.role == 'company')
 
     def has_object_permission(self, request, view, obj):
         return bool(request.user.is_authenticated and request.user.role.role == 'company' and request.user.id == obj.user.id)
 
 
 class IsOwner(permissions.BasePermission):
-    """
-    Custom permission to only allow owners of an object to edit it.
-    """
+
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_authenticated)
 
     def has_object_permission(self, request, view, obj):
-        return bool(request.user.is_authenticated and obj.user == request.user)
+        return bool(request.user.is_authenticated and obj == request.user)
