@@ -1,12 +1,27 @@
 from rest_framework import serializers
 
 from apps.review.models import Review
-from apps.user.models import Client, Company
+from apps.service.models import Service
 
 
-class ReviewSerializer(serializers.HyperlinkedModelSerializer):
-    client = serializers.SlugRelatedField(slug_field='first_name', queryset=Client.objects.all())
-    company = serializers.SlugRelatedField(slug_field='name', queryset=Company.objects.all())
+class ReadReviewSerializer(serializers.ModelSerializer):
+    client = serializers.SlugRelatedField(slug_field='full_name', read_only=True)
+    service = serializers.SlugRelatedField(slug_field='name', read_only=True)
     class Meta:
         model = Review
-        fields = ['url', 'id', 'comment', 'rating', 'created_at', 'client', 'company', 'slug']
+        fields = ['url', 'id', 'comment', 'rating', 'created_at', 'client', 'service', 'slug']
+
+
+class AdminCreateReviewSerializer(serializers.ModelSerializer):
+    service = serializers.SlugRelatedField(slug_field='name', queryset=Service.objects.all())
+    class Meta:
+        model = Review
+        fields = ['url', 'id', 'comment', 'rating', 'client', 'service']
+
+
+class ClientCreateReviewSerializer(serializers.ModelSerializer):
+    client = serializers.SlugRelatedField(slug_field='full_name', read_only=True)
+    service = serializers.SlugRelatedField(slug_field='name', queryset=Service.objects.all())
+    class Meta:
+        model = Review
+        fields = ['url', 'id', 'comment', 'rating', 'client', 'service']
