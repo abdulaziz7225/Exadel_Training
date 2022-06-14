@@ -80,38 +80,38 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         return instance
 
 
-class UpdateUserSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=True)
-    role = serializers.SlugRelatedField(slug_field='role', queryset=Role.objects.all())
+# class UpdateUserSerializer(serializers.ModelSerializer):
+#     email = serializers.EmailField(required=True)
+#     role = serializers.SlugRelatedField(slug_field='role', read_only=True) #queryset=Role.objects.all())
 
-    class Meta:
-        model = User
-        fields = ['url', 'id', 'email', 'role', 'phone', 'country', 'city']
-        extra_kwargs = {
-            'role': {'required': True},
-            'phone': {'required': True},
-            'country': {'required': True},
-            'city': {'required': True}
-        }
+#     class Meta:
+#         model = User
+#         fields = ['url', 'id', 'email', 'role', 'phone', 'country', 'city']
+#         extra_kwargs = {
+#             # 'role': {'required': True},
+#             'phone': {'required': True},
+#             'country': {'required': True},
+#             'city': {'required': True}
+#         }
 
-    def validate_email(self, value):
-        user = self.context['request'].user
-        if User.objects.exclude(pk=user.pk).filter(email=value).exists():
-            raise serializers.ValidationError({"email": "This email is already in use."})
-        return value
+#     def validate_email(self, value):
+#         user = self.context['request'].user
+#         if User.objects.exclude(pk=user.pk).filter(email=value).exists():
+#             raise serializers.ValidationError({"email": "This email is already in use."})
+#         return value
 
 
-    def update(self, instance, validated_data):
-        user = self.context['request'].user
+    # def update(self, instance, validated_data):
+    #     user = self.context['request'].user
 
-        if not (user.is_staff or user.pk == instance.pk):
-            raise serializers.ValidationError({"authorize": "You dont have permission for this user."})
+    #     if not (user.is_staff or user.pk == instance.pk):
+    #         raise serializers.ValidationError({"authorize": "You dont have permission for this user."})
 
-        instance.email = validated_data['email']
-        instance.role = validated_data['role']
-        instance.phone = validated_data['phone']
-        instance.country = validated_data['country']
-        instance.city = validated_data['city']
+    #     instance.email = validated_data['email']
+    #     instance.role = validated_data['role']
+    #     instance.phone = validated_data['phone']
+    #     instance.country = validated_data['country']
+    #     instance.city = validated_data['city']
 
-        instance.save()
-        return instance
+    #     instance.save()
+    #     return instance

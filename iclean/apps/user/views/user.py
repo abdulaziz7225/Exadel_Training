@@ -5,8 +5,7 @@ from rest_framework.filters import OrderingFilter
 from apps.user.filters import UserFilter
 from apps.user.models import User
 from apps.user.permissions import IsStaff, IsNotStaff
-from apps.user.serializers.user import ReadUserSerializer, AdminCreateUserSerializer, NonAdminCreateUserSerializer
-from apps.user.serializers.register import UpdateUserSerializer
+from apps.user.serializers.user import ReadUserSerializer, AdminCreateUserSerializer, UpdateUserSerializer
 
 
 # User model 
@@ -33,7 +32,5 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.action in ["update", "partial_update"]:
             return UpdateUserSerializer
         elif self.action in ["create", "destroy"]:
-            if self.request.user.is_staff or self.request.user.is_anonymous:
-                return AdminCreateUserSerializer
-            return NonAdminCreateUserSerializer
+            return AdminCreateUserSerializer
         return ReadUserSerializer

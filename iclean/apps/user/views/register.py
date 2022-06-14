@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from apps.user.permissions import IsOwner
 from apps.user.serializers.register import RegisterUserSerializer, ChangePasswordSerializer
-from apps.user.models import User, Client, Company
+from apps.user.models import User
 
 
 class RegisterUserView(generics.CreateAPIView):
