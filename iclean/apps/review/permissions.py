@@ -25,4 +25,5 @@ class IsCompany(permissions.BasePermission):
         return bool(request.user.is_authenticated and request.user.role.role == "company" and request.method in permissions.SAFE_METHODS)
 
     def has_object_permission(self, request, view, obj):
-        return bool(request.user.is_authenticated and request.user.role.role == "company" and request.user == obj.company.user and request.method in permissions.SAFE_METHODS)
+        return bool(request.user.is_authenticated and request.user.role.role == "company" and \
+            request.user == obj.service.company.user and request.method in permissions.SAFE_METHODS)

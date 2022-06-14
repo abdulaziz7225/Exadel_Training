@@ -47,13 +47,4 @@ class NotificationViewSet(viewsets.ModelViewSet):
             serializer.save(sender=self.request.user)
         elif self.request.user.role.role == 'company':
             serializer.save(sender=self.request.user, company=self.request.user.companys)
-
-    # def get_queryset(self):
-    #     is_staff = getattr(self.request.user, "is_staff", None)
-    #     if is_staff:
-    #         return Notification.objects.all()
-    #     request = None
-    #     if self.request.user.id:
-    #         request = Request.objects.filter(
-    #             client=self.request.user.id).first()
-    #     return Notification.objects.filter(Q(request=getattr(request, "id", 0)) | Q(company=self.request.user.id)).all()
+        serializer.save()

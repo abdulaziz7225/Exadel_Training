@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 
 from apps.user.filters import UserFilter
 from apps.user.models import User
@@ -15,8 +16,9 @@ class UserViewSet(viewsets.ModelViewSet):
     'update' and 'destroy' actions.
     """
     permission_classes = [IsStaff | IsNotStaff]
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = UserFilter
+    ordering_fields = ['id']
 
 
     # def get_serializer_context(self):

@@ -7,8 +7,6 @@ class ServiceFilter(FilterSet):
     class Meta:
         model = Service
         fields = {
-            'name': ['icontains'],
-            'type_of_service': ['icontains'],
             'company': ['exact'],
             'cost_of_service': ['gte', 'lte'],
         }

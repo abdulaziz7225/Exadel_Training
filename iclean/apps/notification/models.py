@@ -8,7 +8,6 @@ from apps.user.models import User, Company
 class Notification(models.Model):
     name = models.CharField(max_length=100)
     details = models.TextField()
-    # viewed_by_company = models.BooleanField(default=False)
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
     created_at = models.DateTimeField(auto_now_add=True)
     request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='notifications')

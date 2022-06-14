@@ -7,8 +7,6 @@ class ReviewFilter(FilterSet):
     class Meta:
         model = Review
         fields = {
-            'comment': ['icontains'],
             'rating': ['gte', 'lte'],
-            'client': ['exact'],
-            'company': ['exact'],
+            'service': ['exact'],
         }

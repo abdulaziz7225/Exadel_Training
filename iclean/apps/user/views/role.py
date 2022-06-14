@@ -14,6 +14,7 @@ class RoleViewSet(viewsets.ModelViewSet):
     queryset = Role.objects.all()
     permission_classes = [IsStaffOrReadOnly]
 
+
     def get_serializer_class(self):
         if self.request.user.is_staff:
             return AdminRoleSerializer

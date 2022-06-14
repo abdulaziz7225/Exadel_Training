@@ -12,7 +12,6 @@ class ReadServiceSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class AdminCreateServiceSerializer(serializers.ModelSerializer):
-    # company = serializers.SlugRelatedField(slug_field='name', read_only=True)
     class Meta:
         model = Service
         fields = ['url', 'id', 'name', 'type_of_service', 'cost_of_service', 'company']

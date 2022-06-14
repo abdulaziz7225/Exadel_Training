@@ -22,11 +22,12 @@ class ReviewViewSet(viewsets.ModelViewSet):
     search_fields = ['comment']
     ordering_fields = ['rating', 'created_at']
 
+
     def get_queryset(self):
-        queryset = Review.objects.select_related('client', 'company').all()
+        queryset = Review.objects.select_related('client', 'service').all()
         is_staff = getattr(self.request.user, "is_staff", None)
         if not is_staff:
-            queryset = queryset.filter(Q(client=self.request.user.id) | Q(company=self.request.user.id))
+            queryset = queryset.filter(Q(client=self.request.user.id) | Q(service__company=self.request.user.id))
         return queryset
     
 
@@ -41,3 +42,4 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         if not self.request.user.is_staff:
             serializer.save(client=self.request.user.clients)
+        serializer.save()

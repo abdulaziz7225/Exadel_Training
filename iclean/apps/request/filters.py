@@ -7,9 +7,7 @@ class RequestFilter(FilterSet):
     class Meta:
         model = Request
         fields = {
-            'name': ['icontains'],
             'client': ['exact'],
-            # 'company': ['exact'],
             'service': ['exact'],
             'status': ['exact'],
         }

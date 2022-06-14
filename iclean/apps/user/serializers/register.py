@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
-from apps.user.models import User
+from apps.user.models import Role, User
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -13,6 +13,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password_2 = serializers.CharField(write_only=True, required=True)
+    role = serializers.SlugRelatedField(slug_field='role', queryset=Role.objects.exclude(role='admin').all())
 
     class Meta:
         model = User
@@ -71,7 +72,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         user = self.context['request'].user
 
-        if user.pk != instance.pk:
+        if not (user.is_staff or user.pk == instance.pk):
             raise serializers.ValidationError({"authorize": "You dont have permission for this user."})
 
         instance.set_password(validated_data['new_password'])
@@ -81,6 +82,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 
 class UpdateUserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
+    role = serializers.SlugRelatedField(slug_field='role', queryset=Role.objects.all())
 
     class Meta:
         model = User
@@ -98,10 +100,11 @@ class UpdateUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"email": "This email is already in use."})
         return value
 
+
     def update(self, instance, validated_data):
         user = self.context['request'].user
 
-        if user.pk != instance.pk:
+        if not (user.is_staff or user.pk == instance.pk):
             raise serializers.ValidationError({"authorize": "You dont have permission for this user."})
 
         instance.email = validated_data['email']

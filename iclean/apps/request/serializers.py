@@ -1,11 +1,12 @@
 from rest_framework import serializers
 
 from apps.request.models import RequestStatus, Request
+from apps.service.models import Service
 
 
 # RequestStatus model
 class AdminRequestStatusSerializer(serializers.HyperlinkedModelSerializer):
-    # requests = serializers.HyperlinkedRelatedField(many=True, view_name='request-detail', read_only=True)
+    requests = serializers.HyperlinkedRelatedField(many=True, view_name='request-detail', read_only=True)
     class Meta:
         model = RequestStatus
         fields = ['url', 'id', 'name', 'requests']
@@ -33,12 +34,25 @@ class ReadRequestSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class AdminCreateRequestSerializer(serializers.ModelSerializer):
+    status = serializers.SlugRelatedField(slug_field='name', queryset=RequestStatus.objects.all())
+    service = serializers.SlugRelatedField(slug_field='name', queryset=Service.objects.all())
     class Meta:
         model = Request
         fields = ['url', 'id', 'name', 'total_area', 'client', 'status', 'service']
 
 
 class ClientCreateRequestSerializer(serializers.ModelSerializer):
+    client = serializers.SlugRelatedField(slug_field='full_name', read_only=True)
+    status = serializers.SlugRelatedField(slug_field='name', queryset=RequestStatus.objects.all())
+    service = serializers.SlugRelatedField(slug_field='name', queryset=Service.objects.all())
+    class Meta:
+        model = Request
+        fields = ['url', 'id', 'name', 'total_area', 'client', 'status', 'service']
+
+
+class CompanyUpdateRequestSerializer(serializers.ModelSerializer):
+    status = serializers.SlugRelatedField(slug_field='name', queryset=RequestStatus.objects.all())
     class Meta:
         model = Request
         fields = ['url', 'id', 'name', 'total_area', 'status', 'service']
+        read_only_fields = ['name', 'total_area', 'service']

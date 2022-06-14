@@ -7,7 +7,7 @@ from apps.request.filters import RequestFilter
 from apps.request.models import Request, RequestStatus
 from apps.request.permissions import IsStaffOrReadOnly, IsStaff, IsClient, IsCompany 
 from apps.request.serializers import AdminRequestStatusSerializer, NonAdminRequestStatusSerializer, \
-        ReadRequestSerializer, AdminCreateRequestSerializer, ClientCreateRequestSerializer
+        ReadRequestSerializer, AdminCreateRequestSerializer, ClientCreateRequestSerializer, CompanyUpdateRequestSerializer
 
 
 # RequestStatus model
@@ -17,7 +17,6 @@ class RequestStatusViewSet(viewsets.ModelViewSet):
     'update' and 'destroy' actions.
     """
     queryset = RequestStatus.objects.all()
-    # serializer_class = RequestStatusSerializerForAdmin
     permission_classes = [IsStaffOrReadOnly]
     
 
@@ -55,10 +54,13 @@ class RequestViewSet(viewsets.ModelViewSet):
         if self.action in ["create", "update", "partial_update", "destroy"]:
             if self.request.user.is_staff:
                 return AdminCreateRequestSerializer
-            return ClientCreateRequestSerializer
+            elif self.request.user.role.role == 'client':
+                return ClientCreateRequestSerializer
+            return CompanyUpdateRequestSerializer
         return ReadRequestSerializer
     
 
     def perform_create(self, serializer):
         if not self.request.user.is_staff:
             serializer.save(client=self.request.user.clients)
+        serializer.save()

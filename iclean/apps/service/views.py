@@ -13,8 +13,6 @@ class ServiceViewSet(viewsets.ModelViewSet):
     This viewset automatically provides 'list', 'create', 'retrieve',
     'update' and 'destroy' actions.
     """
-    # queryset = Service.objects.select_related('company').all()
-    # serializer_class = ReadServiceSerializer
     permission_classes = [IsStaff | IsClient | IsCompany]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ServiceFilter
@@ -41,3 +39,4 @@ class ServiceViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         if not self.request.user.is_staff:
             serializer.save(company=self.request.user.companys)
+        serializer.save()
