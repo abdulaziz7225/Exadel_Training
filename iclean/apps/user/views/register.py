@@ -38,7 +38,25 @@ class LogoutView(APIView):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        
+# class LogoutView(generics.GenericAPIView):
+#     serializer_class = LogoutSerializer
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request):
+#         serializer = self.serializer_class(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(status=status.HTTP_205_RESET_CONTENT)
+        # try:
+        #     refresh_token = request.data["refresh_token"]
+        #     token = RefreshToken(refresh_token)
+        #     token.blacklist()
+
+        #     return Response(status=status.HTTP_205_RESET_CONTENT)
+        # except Exception as e:
+        #     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 class LogoutAllView(APIView):
     
     permission_classes = [IsAuthenticated]
