@@ -57,6 +57,7 @@ class LogoutView(APIView):
         #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class LogoutAllView(APIView):
     
     permission_classes = [IsAuthenticated]
